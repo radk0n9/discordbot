@@ -20,16 +20,30 @@ rich_handler: RichHandler = RichHandler(rich_tracebacks=True)
 rich_handler.setLevel(INFO)
 rich_handler.setFormatter(Formatter("%(message)s"))
 
-if not os.path.isdir('./Log'):
-    os.makedirs('./Log', exist_ok=True)
+#mac
+#if not os.path.isdir('./Log'):
+#    os.makedirs('./Log', exist_ok=True)
+#file_handler = FileHandler(
+#    f"./Log/log{datetime.now():%d-%m-%Y_%H:%M:%S}.log")
 
+#windows
+if not os.path.isdir('./Log'):
+   os.makedirs('./Log', exist_ok=True)
 file_handler = FileHandler(
-    f"./Log/log{datetime.now():%d-%m-%Y_%H:%M:%S}.log")
+   f"./Log/log{datetime.now():%d%Y%m%H%M%S_%f}.log", encoding="utf-8")
+# if not os.path.isdir('./Log'):
+#     os.makedirs('./Log', exist_ok=True)
+#
+# file_handler = FileHandler(
+#     './Log/log{}.log'.format(datetime.strftime(datetime.now(), '%d%Y%m%H%M%S_%f')))
+
 file_handler.setLevel(DEBUG)
 file_handler.setFormatter(
     Formatter("%(asctime)s@ %(name)s [%(levelname)s] %(funcName)s: %(message)s"))
 
 logging.basicConfig(level=NOTSET, handlers=[rich_handler, file_handler])
+
+# logging.basicConfig(level=logging.INFO, handlers=[rich_handler, file_handler])
 # logger = logging.getLogger(__name__)
 #
 # logger.debug("debug")
@@ -64,11 +78,12 @@ client.report_a_problem()
 
 @client.event
 async def on_message(msg):
+    channel = msg.channel
+    print(f"{now_time()}: {msg.author.name} wysłał wiadomość: <{msg.content}> na kanale: {channel}")
     send_message = SendMessage(msg)
     content = send_message.text_hi()
     try:
         await msg.channel.send(content)
-        print(f"{now_time()}: Bot wysyła wiadomość: {content}")
     except discord.errors.HTTPException:
         pass
     await client.process_commands(msg)
@@ -90,10 +105,11 @@ async def on_member_remove(member):
     await channel.send(msg)
 
 
-@client.event
-async def on_message(msg):
-    channel = msg.channel
-    print(f"{now_time()}: {msg.author.name} wysłał wiadomość: <{msg.content}> na kanale: {channel}")
+# @client.event
+# async def on_message(msg):
+#     channel = msg.channel
+#     print(f"{now_time()}: {msg.author.name} wysłał wiadomość: <{msg.content}> na kanale: {channel}")
+#     await client.process_commands(msg)
 
 @client.event
 async def on_member_update(before, after):
