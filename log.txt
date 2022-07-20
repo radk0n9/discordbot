@@ -177,3 +177,14 @@ ERROR BAN: You are missing Ban Members permission(s) to run this command.
 ERROR BAN: You are missing Ban Members permission(s) to run this command.
 
 20-07-2022, 20:30:41: U≈ºytkownik Lidku8#7618 pr√≥bwowa≈Ç kogo≈õ zbanowaƒá za pomocƒÖ komendy !ban (!ban).
+
+20-07-2022, 20:32:31: Discord bot working...
+
+
+ERROR BAN: username is a required argument that is missing.
+
+20-07-2022, 20:32:34: Uøytkownik RaDkon#0762 üle uøy≥ komendy !ban (!ban).
+
+ERROR BAN: username is a required argument that is missing.
+
+20-07-2022, 20:32:41: Uøytkownik RaDkon#0762 üle uøy≥ komendy !ban (!ban).
