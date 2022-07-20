@@ -240,3 +240,37 @@ ERROR BAN: username is a required argument that is missing.
 
 20-07-2022, 20:59:56: Discord bot working...
 
+
+20-07-2022, 21:01:32: Discord bot working...
+
+20-07-2022, 21:04:01: Użytkownik RaDkon#0762 źle użył komendy !zglos "!zglos"
+20-07-2022, 21:04:37: Użytkownik VooDooBeach#5487 zgłosił buga/problem/propozycję o treści: "JR"
+
+ERROR KICK: You are missing Kick Members permission(s) to run this command.
+
+20-07-2022, 21:08:53: Użytkownik VooDooBeach#5487 próbwował kogoś wyrzuć za pomocą komendy !kick (!kick).
+
+ERROR BAN: You are missing Ban Members permission(s) to run this command.
+
+20-07-2022, 21:09:06: Użytkownik VooDooBeach#5487 próbwował kogoś zbanować za pomocą komendy !ban (!ban).
+
+ERROR BAN: You are missing Ban Members permission(s) to run this command.
+
+20-07-2022, 21:09:11: Użytkownik VooDooBeach#5487 próbwował kogoś zbanować za pomocą komendy !ban (!ban all).
+
+ERROR BAN: You are missing Ban Members permission(s) to run this command.
+
+20-07-2022, 21:58:49: Użytkownik VooDooBeach#5487 próbwował kogoś zbanować za pomocą komendy !ban (!ban <@358573768018493442>).
+20-07-2022, 23:19:25: Użytkownik Kucyk dołączył do serwera.
+20-07-2022, 23:19:29: Dodano role Beta-Tester - Kucyk
+
+20-07-2022, 23:23:57: Discord bot working...
+
+20-07-2022, 23:25:50: Usunieto role ☑️ - Kucyk
+20-07-2022, 23:25:51: Dodano role ☑️ - Kucyk
+20-07-2022, 23:25:59: Dodano role Mężczyzna - Kucyk
+20-07-2022, 23:26:09: Dodano role 20+ - Kucyk
+20-07-2022, 23:26:18: Dodano role Euro Truck Simulator 2 - Kucyk
+20-07-2022, 23:26:22: Dodano role Valorant - Kucyk
+20-07-2022, 23:26:24: Dodano role Minecraft - Kucyk
+20-07-2022, 23:29:11: Użytkownik RaDkon#0762 źle użył komendy !zglos "!zglos"
