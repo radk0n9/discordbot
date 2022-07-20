@@ -30,7 +30,7 @@ rich_handler.setFormatter(Formatter("%(message)s"))
 if not os.path.isdir('./Log'):
    os.makedirs('./Log', exist_ok=True)
 file_handler = FileHandler(
-   f"./Log/log{datetime.now():%d%Y%m%H%M%S_%f}.log", encoding="utf-8")
+   f"./Log/log{datetime.now():_%d-%m-%Y_%H-%M-%S-%f}.log", encoding="utf-8")
 # if not os.path.isdir('./Log'):
 #     os.makedirs('./Log', exist_ok=True)
 #
