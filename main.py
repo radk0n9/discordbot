@@ -1,23 +1,54 @@
 # -*- coding: utf-8 -*-
 import discord
 import sys
-import datetime as dt
+from datetime import datetime
+import os
+import logging
+from logging import StreamHandler, FileHandler, Formatter
+from logging import INFO, DEBUG, NOTSET
+from rich.logging import RichHandler
 from my_client import MyClient
 from event import SendMessage, OnMember, OnMemberUpdate
 from role_dict import ROLE_DICT_PLEC, ROLE_DICT_WIEK, ROLE_DICT_GRY
 from discord.ext.commands import has_permissions, MissingPermissions, MemberNotFound, MissingRequiredArgument
 
-file = open("log.txt", "a", encoding="utf-8")
-sys.stdout = file
+# stream_handler = StreamHandler()
+# stream_handler.setLevel(INFO)
+# stream_handler.setFormatter(Formatter("%(message)s"))
+
+rich_handler: RichHandler = RichHandler(rich_tracebacks=True)
+rich_handler.setLevel(INFO)
+rich_handler.setFormatter(Formatter("%(message)s"))
+
+if not os.path.isdir('./Log'):
+    os.makedirs('./Log', exist_ok=True)
+
+file_handler = FileHandler(
+    f"./Log/log{datetime.now():%d-%m-%Y_%H:%M:%S}.log")
+file_handler.setLevel(DEBUG)
+file_handler.setFormatter(
+    Formatter("%(asctime)s@ %(name)s [%(levelname)s] %(funcName)s: %(message)s"))
+
+logging.basicConfig(level=NOTSET, handlers=[rich_handler, file_handler])
+# logger = logging.getLogger(__name__)
+#
+# logger.debug("debug")
+# logger.info("info")
+# logger.warning("warn")
+# logger.error("error")
+# logger.critical("critical")
+# file = open("log.txt", "a", encoding="utf-8")
+# sys.stdout = file
 
 
 def now_time():
-    now = dt.datetime.now()
+    now = datetime.now()
     date_time = now.strftime("%d-%m-%Y, %H:%M:%S")
     return date_time
 
 
 intents = discord.Intents.all()
+intents.members = True
 client = MyClient(command_prefix="!", intents=intents, self_bot=False)
 
 
@@ -37,6 +68,7 @@ async def on_message(msg):
     content = send_message.text_hi()
     try:
         await msg.channel.send(content)
+        print(f"{now_time()}: Bot wysyła wiadomość: {content}")
     except discord.errors.HTTPException:
         pass
     await client.process_commands(msg)
@@ -57,6 +89,11 @@ async def on_member_remove(member):
     msg = on_member.when_member_leave()
     await channel.send(msg)
 
+
+@client.event
+async def on_message(msg):
+    channel = msg.channel
+    print(f"{now_time()}: {msg.author.name} wysłał wiadomość: <{msg.content}> na kanale: {channel}")
 
 @client.event
 async def on_member_update(before, after):
@@ -335,4 +372,4 @@ async def unban_error(ctx, error):
 #     print(msg.content)
 
 client.run(client.get_token())
-file.close()
+# file.close()

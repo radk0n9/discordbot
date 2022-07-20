@@ -7,8 +7,8 @@ from my_client import MyClient
 
 intents = discord.Intents.all()
 client = MyClient(command_prefix="!", intents=intents, self_bot=False)
-file = open("log.txt", "a", encoding="utf-8")
-sys.stdout = file
+# file = open("log.txt", "a", encoding="utf-8")
+# sys.stdout = file
 
 
 def now_time():
@@ -68,5 +68,5 @@ class OnMemberUpdate:
         message = f"{self.after.mention} właśnie zboostował nasz serwer! Wielki dzięki za to :heart::partying_face:"
         print(f"{now_time()}: {self.after.name} właśnie zboostował serwer")
         return message
-
-file.close()
+#
+# file.close()

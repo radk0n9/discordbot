@@ -8,8 +8,8 @@ from dotenv import load_dotenv
 from discord.ext import commands
 from discord.ext.commands import has_permissions, MissingPermissions, MissingRequiredArgument
 
-file = open("log.txt", "a", encoding="utf-8")
-sys.stdout = file
+# file = open("log.txt", "a", encoding="utf-8")
+# sys.stdout = file
 # intents = discord.Intents.all()
 load_dotenv()
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
@@ -101,4 +101,4 @@ class MyClient(commands.Bot):
                 print(f'{now_time()}: Użytkownik {user_error} źle użył komendy !zglos "{ctx.message.content}"')
 
 
-file.close()
+# file.close()
