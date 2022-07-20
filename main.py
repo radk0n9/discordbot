@@ -1,5 +1,4 @@
 
-# TODO 3 Message when someone boost the server
 
 import discord
 import sys
