@@ -1,0 +1,179 @@
+
+20-07-2022, 19:36:11: Discord bot working...
+
+
+20-07-2022, 19:36:57: Discord bot working...
+
+
+20-07-2022, 19:37:15: Discord bot working...
+
+
+20-07-2022, 19:38:21: Discord bot working...
+
+
+20-07-2022, 19:38:29: Discord bot working...
+
+Lidku8#7618
+20-07-2022, 19:38:29: Użytkownik Lidku8 opuścił serwer.
+20-07-2022, 19:38:29: RaDkon wyrzucił <property object at 0x10c984bd0>
+
+20-07-2022, 19:39:18: Discord bot working...
+
+20-07-2022, 19:39:18: Użytkownik Lidku8 dołączył do serwera.
+
+20-07-2022, 19:40:09: Discord bot working...
+
+Lidku8#7618
+20-07-2022, 19:40:09: RaDkon wyrzucił <property object at 0x10ee16900> za test
+20-07-2022, 19:40:09: Użytkownik Lidku8 opuścił serwer.
+
+20-07-2022, 19:40:59: Discord bot working...
+
+
+20-07-2022, 19:42:34: Discord bot working...
+
+20-07-2022, 19:42:34: Użytkownik Lidku8 dołączył do serwera.
+Lidku8#7618
+20-07-2022, 19:43:05: RaDkon wyrzucił Lidku8 za test
+20-07-2022, 19:42:34: Użytkownik Lidku8 opuścił serwer.
+
+20-07-2022, 19:46:01: Discord bot working...
+
+20-07-2022, 19:48:59: Użytkownik Lidku8 dołączył do serwera.
+
+20-07-2022, 19:49:22: Discord bot working...
+
+Lidku8#7618
+20-07-2022, 19:49:25: RaDkon wyrzucił Lidku8 za test
+20-07-2022, 19:49:25: Użytkownik Lidku8 opuścił serwer.
+20-07-2022, 19:49:29: Użytkownik RaDkon#0762 próbwował wyrzucić kogoś kogo nie ma na serwerze.
+20-07-2022, 19:49:47: Użytkownik Lidku8 dołączył do serwera.
+
+20-07-2022, 19:51:08: Discord bot working...
+
+
+20-07-2022, 19:51:25: Discord bot working...
+
+
+20-07-2022, 19:51:36: Discord bot working...
+
+
+20-07-2022, 19:51:51: Discord bot working...
+
+Usunieto role Beta-Tester - Lidku8
+Dodano role Beta-Tester - Lidku8
+Usunieto role ☑️ - Lidku8
+Dodano role ☑️ - Lidku8
+
+20-07-2022, 19:57:04: Discord bot working...
+
+20-07-2022, 19:57:09: Użytkownik Lidku8#7618 próbwował kogoś wyrzuć za pomocą komendy !kick (!kick).
+20-07-2022, 19:57:19: Użytkownik RaDkon#0762 źle użył komendy !kick (!kick).
+
+20-07-2022, 19:57:35: Discord bot working...
+
+20-07-2022, 19:57:39: Użytkownik RaDkon#0762 źle użył komendy !kick (!kick).
+20-07-2022, 19:57:55: RaDkon wyrzucił Lidku8 za: BO TAK
+20-07-2022, 19:57:55: Użytkownik Lidku8 opuścił serwer.
+
+20-07-2022, 19:59:29: Discord bot working...
+
+20-07-2022, 19:59:36: Użytkownik Lidku8 dołączył do serwera.
+20-07-2022, 19:59:57: RaDkon wyrzucił Lidku8 za: BO TAK
+20-07-2022, 19:59:58: Użytkownik Lidku8 opuścił serwer.
+
+20-07-2022, 20:01:04: Discord bot working...
+
+
+20-07-2022, 20:01:53: Discord bot working...
+
+20-07-2022, 20:02:02: Użytkownik Lidku8 dołączył do serwera.
+20-07-2022, 20:02:12: RaDkon wyrzucił Lidku8 za: BO TAK
+20-07-2022, 20:02:12: Użytkownik Lidku8 opuścił serwer.
+20-07-2022, 20:02:41: Użytkownik Lidku8 dołączył do serwera.
+Usunieto role Beta-Tester - Lidku8
+Dodano role Beta-Tester - Lidku8
+Usunieto role ☑️ - Lidku8
+Dodano role ☑️ - Lidku8
+20-07-2022, 20:02:54: Użytkownik Lidku8#7618 próbwował kogoś wyrzuć za pomocą komendy !kick (!kick).
+20-07-2022, 20:03:54: Usuwanie 5 wiadomości przez RaDkon
+20-07-2022, 20:04:00: Usuwanie 2 wiadomości przez RaDkon
+20-07-2022, 20:04:18: Usuwanie 14 wiadomości przez RaDkon
+20-07-2022, 20:04:23: Usuwanie 2 wiadomości przez RaDkon
+
+20-07-2022, 20:06:04: Discord bot working...
+
+username is a required argument that is missing.
+20-07-2022, 20:06:08: Użytkownik RaDkon#0762 źle użył komendy !kick (!kick).
+
+20-07-2022, 20:12:35: Discord bot working...
+
+ERROR BAN: username is a required argument that is missing.
+
+20-07-2022, 20:12:37: Użytkownik RaDkon#0762 źle użył komendy !ban (!ban).
+ERROR BAN: You are missing Ban Members permission(s) to run this command.
+
+20-07-2022, 20:12:56: Użytkownik Lidku8#7618 próbwował kogoś zbanować za pomocą komendy !ban (!ban).
+20-07-2022, 20:13:05: Usuwanie 3 wiadomości przez RaDkon
+
+20-07-2022, 20:16:15: Discord bot working...
+
+
+ERROR BAN: Command raised an exception: TypeError: ban() missing 1 required keyword-only argument: 'delete_message_days'
+
+
+20-07-2022, 20:18:27: Discord bot working...
+
+20-07-2022, 20:18:32: RaDkon zbanował Lidku8 za: testuje, usunięto wiadomości z 7 dni.
+20-07-2022, 20:18:33: Użytkownik Lidku8 opuścił serwer.
+
+20-07-2022, 20:18:57: Discord bot working...
+
+
+ERROR UNBAN: Member "460178486582312970" not found.
+
+20-07-2022, 20:19:05: Użytkownik RaDkon#0762 próbwował odbanować kogoś kogo nie ma na serwerze.
+
+20-07-2022, 20:20:24: Discord bot working...
+
+
+ERROR UNBAN: Member "460178486582312970" not found.
+
+20-07-2022, 20:20:33: Użytkownik RaDkon#0762 próbwował odbanować kogoś kogo nie ma na serwerze.
+
+20-07-2022, 20:21:38: Discord bot working...
+
+
+ERROR UNBAN: Converting to "property" failed for parameter "username".
+
+
+20-07-2022, 20:27:59: Discord bot working...
+
+
+ERROR UNBAN: User "Lidku8" not found.
+
+
+ERROR UNBAN: User "Lidku8#7618" not found.
+
+
+20-07-2022, 20:28:41: Discord bot working...
+
+20-07-2022, 20:28:47: RaDkon odbanował Lidku8 z powodu: testuje
+20-07-2022, 20:29:45: Użytkownik Lidku8 dołączył do serwera.
+20-07-2022, 20:29:48: Usunieto role Beta-Tester - Lidku8
+20-07-2022, 20:29:48: Dodano role Beta-Tester - Lidku8
+20-07-2022, 20:29:51: Usunieto role ☑️ - Lidku8
+20-07-2022, 20:29:52: Dodano role ☑️ - Lidku8
+
+ERROR BAN: You are missing Ban Members permission(s) to run this command.
+
+20-07-2022, 20:29:58: Użytkownik Lidku8#7618 próbwował kogoś zbanować za pomocą komendy !ban (!ban).
+20-07-2022, 20:30:06: Usuwanie 3 wiadomości przez RaDkon
+20-07-2022, 20:30:12: Usuwanie 3 wiadomości przez RaDkon
+
+20-07-2022, 20:30:40: Discord bot working...
+
+
+ERROR BAN: You are missing Ban Members permission(s) to run this command.
+
+20-07-2022, 20:30:41: Użytkownik Lidku8#7618 próbwował kogoś zbanować za pomocą komendy !ban (!ban).

@@ -9,8 +9,12 @@ client = MyClient(command_prefix="!", intents=intents, self_bot=False)
 file = open("log.txt", "a")
 sys.stdout = file
 
-now = dt.datetime.now()
-date_time = now.strftime("%d-%m-%Y, %H:%M:%S")
+
+def now_time():
+    now = dt.datetime.now()
+    date_time = now.strftime("%d-%m-%Y, %H:%M:%S")
+    return date_time
+
 
 class SendMessage:
     def __init__(self, message):
@@ -45,13 +49,13 @@ class OnMember:
     def when_member_join(self):
         member = self.member
         message = f"Witaj <@{member.id}>! Miło mi Ciebie gościć :)"
-        print(f"{date_time}: Użytkownik {member.name} dołączył do serwera.")
+        print(f"{now_time()}: Użytkownik {member.name} dołączył do serwera.")
         return message
 
     def when_member_leave(self):
         member = self.member
         message = f"**{member.name}** właśnie nas opuścił/ła :("
-        print(f"{date_time}: Użytkownik {member.name} opuścił serwer.")
+        print(f"{now_time()}: Użytkownik {member.name} opuścił serwer.")
         return message
 
 class OnMemberUpdate:
@@ -61,7 +65,7 @@ class OnMemberUpdate:
 
     def when_member_boost_server(self):
         message = f"{self.after.mention} właśnie zboostował nasz serwer! Wielki dzięki za to :heart::partying_face:"
-        print(f"{date_time}: {self.after.name} właśnie zboostował serwer")
+        print(f"{now_time()}: {self.after.name} właśnie zboostował serwer")
         return message
 
 file.close()
