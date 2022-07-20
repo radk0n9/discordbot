@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 20-07-2022, 19:36:11: Discord bot working...
 
 
@@ -183,8 +183,8 @@ ERROR BAN: You are missing Ban Members permission(s) to run this command.
 
 ERROR BAN: username is a required argument that is missing.
 
-20-07-2022, 20:32:34: U¿ytkownik RaDkon#0762 Ÿle u¿y³ komendy !ban (!ban).
+20-07-2022, 20:32:34: Uï¿½ytkownik RaDkon#0762 ï¿½le uï¿½yï¿½ komendy !ban (!ban).
 
 ERROR BAN: username is a required argument that is missing.
 
-20-07-2022, 20:32:41: U¿ytkownik RaDkon#0762 Ÿle u¿y³ komendy !ban (!ban).
+20-07-2022, 20:32:41: Uï¿½ytkownik RaDkon#0762 ï¿½le uï¿½yï¿½ komendy !ban (!ban).

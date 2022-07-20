@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import discord
 import sys
 import datetime as dt
