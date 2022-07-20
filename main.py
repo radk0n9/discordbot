@@ -12,47 +12,20 @@ from event import SendMessage, OnMember, OnMemberUpdate
 from role_dict import ROLE_DICT_PLEC, ROLE_DICT_WIEK, ROLE_DICT_GRY
 from discord.ext.commands import has_permissions, MissingPermissions, MemberNotFound, MissingRequiredArgument
 
-# stream_handler = StreamHandler()
-# stream_handler.setLevel(INFO)
-# stream_handler.setFormatter(Formatter("%(message)s"))
-
 rich_handler: RichHandler = RichHandler(rich_tracebacks=True)
 rich_handler.setLevel(INFO)
 rich_handler.setFormatter(Formatter("%(message)s"))
 
-#mac
-#if not os.path.isdir('./Log'):
-#    os.makedirs('./Log', exist_ok=True)
-#file_handler = FileHandler(
-#    f"./Log/log{datetime.now():%d-%m-%Y_%H:%M:%S}.log")
-
-#windows
 if not os.path.isdir('./Log'):
    os.makedirs('./Log', exist_ok=True)
 file_handler = FileHandler(
    f"./Log/log{datetime.now():_%d-%m-%Y_%H-%M-%S-%f}.log", encoding="utf-8")
-# if not os.path.isdir('./Log'):
-#     os.makedirs('./Log', exist_ok=True)
-#
-# file_handler = FileHandler(
-#     './Log/log{}.log'.format(datetime.strftime(datetime.now(), '%d%Y%m%H%M%S_%f')))
 
 file_handler.setLevel(DEBUG)
 file_handler.setFormatter(
     Formatter("%(asctime)s@ %(name)s [%(levelname)s] %(funcName)s: %(message)s"))
 
 logging.basicConfig(level=NOTSET, handlers=[rich_handler, file_handler])
-
-# logging.basicConfig(level=logging.INFO, handlers=[rich_handler, file_handler])
-# logger = logging.getLogger(__name__)
-#
-# logger.debug("debug")
-# logger.info("info")
-# logger.warning("warn")
-# logger.error("error")
-# logger.critical("critical")
-# file = open("log.txt", "a", encoding="utf-8")
-# sys.stdout = file
 
 
 def now_time():
