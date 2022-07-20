@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 ROLE_DICT_PLEC = {
     "🙅‍♂️": "Mężczyzna",
     "🙅": "Kobieta",

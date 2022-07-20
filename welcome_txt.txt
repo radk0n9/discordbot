@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 Cześć cześć :grin:
 Witaj! Co słychac?
 Siemanooo!

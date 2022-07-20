@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 from discord.ext import commands
 from discord.ext.commands import has_permissions, MissingPermissions, MissingRequiredArgument
 
-file = open("log.txt", "a")
+file = open("log.txt", "a", encoding="utf-8")
 sys.stdout = file
 # intents = discord.Intents.all()
 load_dotenv()

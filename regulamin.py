@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 regulamin = (
     "REGULAMIN SERWERA RADKON'S SERWER!\n"
     

@@ -7,7 +7,7 @@ from event import SendMessage, OnMember, OnMemberUpdate
 from role_dict import ROLE_DICT_PLEC, ROLE_DICT_WIEK, ROLE_DICT_GRY
 from discord.ext.commands import has_permissions, MissingPermissions, MemberNotFound, MissingRequiredArgument
 
-file = open("log.txt", "a")
+file = open("log.txt", "a", encoding="utf-8")
 sys.stdout = file
 
 

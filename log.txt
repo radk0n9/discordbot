@@ -188,3 +188,55 @@ ERROR BAN: username is a required argument that is missing.
 ERROR BAN: username is a required argument that is missing.
 
 20-07-2022, 20:32:41: UÔøΩytkownik RaDkon#0762 ÔøΩle uÔøΩyÔøΩ komendy !ban (!ban).
+
+20-07-2022, 20:37:09: Discord bot working...
+
+20-07-2022, 20:37:19: Usuwanie 2 wiadomoúci przez RaDkon
+20-07-2022, 20:37:24: Usunieto role Beta-Tester - KuseV
+20-07-2022, 20:37:25: Dodano role Beta-Tester - KuseV
+20-07-2022, 20:37:54: Dodano role MÍøczyzna - KuseV
+20-07-2022, 20:38:01: Usunieto role Beta-Tester - Lidku8
+20-07-2022, 20:38:01: Dodano role 14+ - KuseV
+20-07-2022, 20:38:04: Dodano role Beta-Tester - Lidku8
+20-07-2022, 20:38:06: Dodano role Counter-Strike: Global Offensive - KuseV
+20-07-2022, 20:38:08: Usunieto role Beta-Tester - Lidku8
+20-07-2022, 20:38:09: Dodano role Fortnite - KuseV
+20-07-2022, 20:38:14: Dodano role Beta-Tester - Lidku8
+20-07-2022, 20:38:15: Dodano role Forza Horizon 4 - KuseV
+20-07-2022, 20:38:18: Dodano role Minecraft - KuseV
+20-07-2022, 20:38:25: Usunieto role Beta-Tester - Lidku8
+20-07-2022, 20:38:27: Dodano role Beta-Tester - Lidku8
+20-07-2022, 20:39:39: RaDkon uøy≥ komendy !list-users
+20-07-2022, 20:39:48: Dodano role Beta-Tester - VooDooBeach
+20-07-2022, 20:40:31: Dodano role MÍøczyzna - VooDooBeach
+20-07-2022, 20:40:34: Dodano role 24+ - VooDooBeach
+20-07-2022, 20:40:40: Dodano role Counter-Strike: Global Offensive - VooDooBeach
+20-07-2022, 20:40:42: Dodano role Euro Truck Simulator 2 - VooDooBeach
+20-07-2022, 20:40:44: Dodano role Forza Horizon 4 - VooDooBeach
+20-07-2022, 20:40:45: Dodano role Forza Horizon 5 - VooDooBeach
+20-07-2022, 20:40:46: Dodano role Grand Theft Auto V - VooDooBeach
+20-07-2022, 20:40:46: Dodano role League of Legends - VooDooBeach
+
+20-07-2022, 20:42:40: Discord bot working...
+
+20-07-2022, 20:42:47: Uøytkownik VooDooBeach#5487 üle uøy≥ komendy !zglos "!zglos"
+
+20-07-2022, 20:48:26: Discord bot working...
+
+20-07-2022, 20:58:57: Usunieto role Beta-Tester - stachu
+20-07-2022, 20:58:58: Dodano role Beta-Tester - stachu
+20-07-2022, 20:58:59: Usunieto role ‚òëÔ∏è - Lidku8
+20-07-2022, 20:59:01: Dodano role ‚òëÔ∏è - Lidku8
+20-07-2022, 20:59:08: Dodano role ‚òëÔ∏è - stachu
+20-07-2022, 20:59:20: Dodano role Forza Horizon 4 - stachu
+
+20-07-2022, 20:59:20: Discord bot working...
+
+20-07-2022, 20:59:21: Dodano role Valorant - stachu
+20-07-2022, 20:59:27: Dodano role Minecraft - stachu
+20-07-2022, 20:59:28: Usunieto role Minecraft - stachu
+20-07-2022, 20:59:31: Dodano role Minecraft - stachu
+20-07-2022, 20:59:32: Dodano role Euro Truck Simulator 2 - stachu
+
+20-07-2022, 20:59:56: Discord bot working...
+

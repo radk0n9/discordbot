@@ -7,7 +7,7 @@ from my_client import MyClient
 
 intents = discord.Intents.all()
 client = MyClient(command_prefix="!", intents=intents, self_bot=False)
-file = open("log.txt", "a")
+file = open("log.txt", "a", encoding="utf-8")
 sys.stdout = file
 
 
@@ -23,12 +23,12 @@ class SendMessage:
 
     def text_hi(self):
         if len(self.message.content) >= 3:
-            with open("example_welcome.txt", "r") as a:
+            with open("example_welcome.txt", "r", encoding="utf-8") as a:
                 line_example_welcome = a.readlines()
                 for line in line_example_welcome:
                     line_striped = line.strip()
                     if self.message.content == line_striped:
-                        with open("welcome_txt.txt", "r") as f:
+                        with open("welcome_txt.txt", "r", encoding="utf-8") as f:
                             lines_welcome_text = f.readlines()
                             choice_welcome_text = random.choice(lines_welcome_text)
                         return choice_welcome_text
