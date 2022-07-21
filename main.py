@@ -173,7 +173,7 @@ async def gry(ctx, amount=1):
 
 @client.event
 async def on_raw_reaction_add(payload):
-    message_regulamin = 996167907375595610
+    message_regulamin = 999688170927042643
     message_plec = 996145295014502410
     message_wiek = 996147074322153513
     message_gry = 996149490119618580
@@ -215,7 +215,7 @@ async def on_raw_reaction_add(payload):
 
 @client.event
 async def on_raw_reaction_remove(payload):
-    message_regulamin = 996167907375595610
+    message_regulamin = 999688170927042643
     message_plec = 996145295014502410
     message_wiek = 996147074322153513
     message_gry = 996149490119618580
@@ -345,7 +345,7 @@ async def unban_error(ctx, error):
 # @client.event
 # async def on_message(message):
 #     if message.content == message.content:
-#         emoji = "♿"
+#         emoji = "✅"
 #         await message.add_reaction(emoji)
 
 # @client.command(name="r")
