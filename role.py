@@ -1,33 +1,16 @@
-# import discord
-# import os
-# from my_client import MyClient
-# from role_dict import ROLE_DICT_PLEC, ROLE_DICT_WIEK, ROLE_DICT_GRY
-# from discord.ext import commands
-# from discord.ext.commands import has_permissions, MissingPermissions
-# from dotenv import load_dotenv
+# import sys
 #
-# load_dotenv()
-# DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
-# intents = discord.Intents.all()
-# # client = commands.Bot(command_prefix="!", intents=intents)
-# client = MyClient(command_prefix="!", intents=intents)
-# # embed = bot.embed()
+# class Tee:
+#     def __init__(self, out1, out2):
+#         self.out1 = out1
+#         self.out2 = out2
 #
-# class Role:
+#     def write(self, *args, **kwargs):
+#         self.out1.write(*args, **kwargs)
+#         self.out2.write(*args, **kwargs)
 #
 #
-#     def plec(self):
-#         @client.command(name="plec")
-#         async def plec(ctx, amount=1):
-#             await ctx.channel.purge(limit=amount)
-#             embed_msg = embed(title="Wybierz swoją płeć:",
-#                               description="\n"
-#                                           ":man_gesturing_no: : Mężczyzna\n"
-#                                           "\n"
-#                                           ":person_gesturing_no: : Kobieta\n",
-#                               colour=discord.Colour.dark_magenta(),
-#                               )
-#             msg = await ctx.channel.send(embed=embed_msg)
-#             emojis = ROLE_DICT_PLEC
-#             for emoji in emojis:
-#                 await msg.add_reaction(emoji)
+#
+# sys.stdout = Tee(open("./logs.txt", "w"), sys.stdout)
+#
+# print("hello")

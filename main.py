@@ -30,7 +30,7 @@ logging.basicConfig(level=NOTSET, handlers=[rich_handler, file_handler])
 
 def now_time():
     now = datetime.now()
-    date_time = now.strftime("%d-%m-%Y, %H:%M:%S")
+    date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     return date_time
 
 
@@ -52,7 +52,7 @@ client.report_a_problem()
 @client.event
 async def on_message(msg):
     channel = msg.channel
-    print(f"{now_time()}: {msg.author.name} wysłał wiadomość: <{msg.content}> na kanale: {channel}")
+    logging.info(f"\n\n{msg.author.name} wysłał wiadomość: <{msg.content}> na kanale: {channel}.\n")
     send_message = SendMessage(msg)
     content = send_message.text_hi()
     try:
@@ -77,12 +77,6 @@ async def on_member_remove(member):
     msg = on_member.when_member_leave()
     await channel.send(msg)
 
-
-# @client.event
-# async def on_message(msg):
-#     channel = msg.channel
-#     print(f"{now_time()}: {msg.author.name} wysłał wiadomość: <{msg.content}> na kanale: {channel}")
-#     await client.process_commands(msg)
 
 @client.event
 async def on_member_update(before, after):
@@ -190,33 +184,33 @@ async def on_raw_reaction_add(payload):
     if payload.message_id == message_regulamin:
         role = discord.utils.get(guild.roles, name="☑️")
         await payload.member.add_roles(role)
-        print(f"{now_time()}: Dodano role {role} - {payload.member.name}")
+        logging.info(f"\n\nDodano role {role} - {payload.member.name}.\n")
 
     if payload.message_id == message_przeczytaj_to:
         role = discord.utils.get(guild.roles, name="Beta-Tester")
         await payload.member.add_roles(role)
-        print(f"{now_time()}: Dodano role {role} - {payload.member.name}")
+        logging.info(f"\n\nDodano role {role} - {payload.member.name}.\n")
 
     if payload.message_id == message_plec:
         for rola in ROLE_DICT_PLEC:
             if payload.emoji.name == rola:
                 role = discord.utils.get(guild.roles, name=ROLE_DICT_PLEC[rola])
                 await payload.member.add_roles(role)
-                print(f"{now_time()}: Dodano role {role} - {payload.member.name}")
+                logging.info(f"\n\nDodano role {role} - {payload.member.name}.\n")
 
     if payload.message_id == message_wiek:
         for rola in ROLE_DICT_WIEK:
             if payload.emoji.name == rola:
                 role = discord.utils.get(guild.roles, name=ROLE_DICT_WIEK[rola])
                 await payload.member.add_roles(role)
-                print(f"{now_time()}: Dodano role {role} - {payload.member.name}")
+                logging.info(f"\n\nDodano role {role} - {payload.member.name}.\n")
 
     if payload.message_id == message_gry:
         for rola in ROLE_DICT_GRY:
             if payload.emoji.name == rola:
                 role = discord.utils.get(guild.roles, name=ROLE_DICT_GRY[rola])
                 await payload.member.add_roles(role)
-                print(f"{now_time()}: Dodano role {role} - {payload.member.name}")
+                logging.info(f"\n\nDodano role {role} - {payload.member.name}.\n")
 
 
 @client.event
@@ -232,39 +226,39 @@ async def on_raw_reaction_remove(payload):
     if payload.message_id == message_regulamin:
         role = discord.utils.get(guild.roles, name="☑️")
         await member.remove_roles(role)
-        print(f"{now_time()}: Usunieto role {role} - {member.name}")
+        logging.info(f"\n\nUsunieto role {role} - {member.name}.\n")
 
     if payload.message_id == message_przeczytaj_to:
         role = discord.utils.get(guild.roles, name="Beta-Tester")
         await member.remove_roles(role)
-        print(f"{now_time()}: Usunieto role {role} - {member.name}")
+        logging.info(f"\n\nUsunieto role {role} - {member.name}.\n")
 
     if payload.message_id == message_plec:
         for rola in ROLE_DICT_PLEC:
             if payload.emoji.name == rola:
                 role = discord.utils.get(guild.roles, name=ROLE_DICT_PLEC[rola])
                 await member.remove_roles(role)
-                print(f"{now_time()}: Usunieto role {role} - {member.name}")
+                logging.info(f"\n\nUsunieto role {role} - {member.name}.\n")
 
     if payload.message_id == message_wiek:
         for rola in ROLE_DICT_WIEK:
             if payload.emoji.name == rola:
                 role = discord.utils.get(guild.roles, name=ROLE_DICT_WIEK[rola])
                 await member.remove_roles(role)
-                print(f"{now_time()}: Usunieto role {role} - {member.name}")
+                logging.info(f"\n\nUsunieto role {role} - {member.name}.\n")
 
     if payload.message_id == message_gry:
         for rola in ROLE_DICT_GRY:
             if payload.emoji.name == rola:
                 role = discord.utils.get(guild.roles, name=ROLE_DICT_GRY[rola])
                 await member.remove_roles(role)
-                print(f"{now_time()}: Usunieto role {role} - {member.name}")
+                logging.info(f"\n\nUsunieto role {role} - {member.name}.\n")
 
 
 @client.command(name="kick")
 @has_permissions(kick_members=True)
 async def kick(ctx, username: member, *, reason):
-    print(f"{now_time()}: {ctx.message.author.name} wyrzucił {username.display_name} za: {reason}")
+    logging.warning(f"\n\n{ctx.message.author.name} wyrzucił {username.display_name} za: {reason}.\n")
     await ctx.channel.purge(limit=1)
     await username.kick(reason=reason)
     await ctx.channel.send(f"<@{ctx.message.author.id}> wyrzucił {username.display_name} za: **{reason}**.")
@@ -274,26 +268,26 @@ async def kick(ctx, username: member, *, reason):
 async def kick_error(ctx, error):
     user_error = ctx.message.author
     msg_user = ctx.message.content
-    print(f"\nERROR KICK: {error}\n")
+    logging.error(f"\n\nERROR KICK: {error}\n")
     if isinstance(error, MemberNotFound):
         text = f"<@{user_error.id}>, nie ma takiego użytkownika na serwerze."
         await ctx.channel.send(text)
-        print(f"{now_time()}: Użytkownik {user_error} próbwował wyrzucić kogoś kogo nie ma na serwerze.")
+        logging.error(f"\n\nUżytkownik {user_error} próbwował wyrzucić kogoś kogo nie ma na serwerze.\n")
     if isinstance(error, MissingRequiredArgument):
         text = f'<@{user_error.id}>, źle użyłeś komendy, spóbuj `!kick <ID użytkownika> <powód>`'
         await ctx.channel.send(text)
-        print(f"{now_time()}: Użytkownik {user_error} źle użył komendy !kick ({msg_user}).")
+        logging.error(f"\n\nUżytkownik {user_error} źle użył komendy !kick ({msg_user}).\n")
     if isinstance(error, MissingPermissions):
         text = f"<@{user_error.id}>, niestety nie masz uprawnień do tego!"
         await ctx.channel.send(text)
-        print(f"{now_time()}: Użytkownik {user_error} próbwował kogoś wyrzuć za pomocą komendy !kick ({msg_user}).")
+        logging.error(f"\n\nUżytkownik {user_error} próbwował kogoś wyrzuć za pomocą komendy !kick ({msg_user}).\n")
 
 
 @client.command(name="ban")
 @has_permissions(ban_members=True)
 async def ban(ctx, username: member, *, reason, delete_message_days=7):
-    print(f"{now_time()}: {ctx.message.author.name} zbanował {username.display_name} za: {reason}, "
-          f"usunięto wiadomości z {delete_message_days} dni.")
+    logging.warning(f"\n\n{ctx.message.author.name} zbanował {username.display_name} za: {reason}, "
+          f"usunięto wiadomości z {delete_message_days} dni.\n")
     await ctx.channel.purge(limit=1)
     await username.ban(reason=reason, delete_message_days=delete_message_days)
     await ctx.channel.send(f"<@{ctx.message.author.id}> zbanował {username.display_name} za: **{reason}**, "
@@ -304,48 +298,48 @@ async def ban(ctx, username: member, *, reason, delete_message_days=7):
 async def ban_error(ctx, error):
     user_error = ctx.message.author
     msg_user = ctx.message.content
-    print(f"\nERROR BAN: {error}\n")
+    logging.error(f"\n\nERROR BAN: {error}\n")
     if isinstance(error, MemberNotFound):
         text = f"<@{user_error.id}>, nie ma takiego użytkownika na serwerze."
         await ctx.channel.send(text)
-        print(f"{now_time()}: Użytkownik {user_error} próbwował zbanować kogoś kogo nie ma na serwerze.")
+        logging.error(f"\n\nUżytkownik {user_error} próbwował zbanować kogoś kogo nie ma na serwerze.\n")
     if isinstance(error, MissingRequiredArgument):
         text = f'<@{user_error.id}>, źle użyłeś komendy, spóbuj `!ban <ID użytkownika> <powód>' \
                f' <z ilu dni usunąć wiadomości, zakres od 0 do 7>`'
         await ctx.channel.send(text)
-        print(f"{now_time()}: Użytkownik {user_error} źle użył komendy !ban ({msg_user}).")
+        logging.error(f"\n\nUżytkownik {user_error} źle użył komendy !ban ({msg_user}).\n")
     if isinstance(error, MissingPermissions):
         text = f"<@{user_error.id}>, niestety nie masz uprawnień do tego!"
         await ctx.channel.send(text)
-        print(f"{now_time()}: Użytkownik {user_error} próbwował kogoś zbanować za pomocą komendy !ban ({msg_user}).")
+        logging.error(f"\n\nUżytkownik {user_error} próbwował kogoś zbanować za pomocą komendy !ban ({msg_user}).\n")
 
 
 @client.command(name="unban")
 @has_permissions(ban_members=True)
 async def unban(ctx, username: discord.User, *, reason):
-    print(f"{now_time()}: {ctx.message.author.name} odbanował {username.display_name} z powodu: {reason}")
+    logging.warning(f"\n\n{ctx.message.author.name} odbanował {username.display_name} z powodu: {reason}.\n")
     await ctx.channel.purge(limit=1)
     await ctx.guild.unban(username, reason=reason)
-    await ctx.channel.send(f"<@{ctx.message.author.id}> odbanował {username.display_name} za: **{reason}**")
+    await ctx.channel.send(f"<@{ctx.message.author.id}> odbanował {username.display_name} za: **{reason}**.")
 
 
 @unban.error
 async def unban_error(ctx, error):
     user_error = ctx.message.author
     msg_user = ctx.message.content
-    print(f"\nERROR UNBAN: {error}\n")
+    logging.error(f"\n\nERROR UNBAN: {error}\n")
     if isinstance(error, MemberNotFound):
         text = f"<@{user_error.id}>, nie ma takiego użytkownika na serwerze."
         await ctx.channel.send(text)
-        print(f"{now_time()}: Użytkownik {user_error} próbwował odbanować kogoś kogo nie ma na serwerze.")
+        logging.error(f"\n\nUżytkownik {user_error} próbwował odbanować kogoś kogo nie ma na serwerze.\n")
     if isinstance(error, MissingRequiredArgument):
         text = f'<@{user_error.id}>, źle użyłeś komendy, spóbuj `!unban <ID użytkownika> <powód>'
         await ctx.channel.send(text)
-        print(f"{now_time()}: Użytkownik {user_error} źle użył komendy !unban ({msg_user}).")
+        logging.error(f"\n\nUżytkownik {user_error} źle użył komendy !unban ({msg_user}).\n")
     if isinstance(error, MissingPermissions):
         text = f"<@{user_error.id}>, niestety nie masz uprawnień do tego!"
         await ctx.channel.send(text)
-        print(f"{now_time()}: Użytkownik {user_error} próbwował kogoś odbanować za pomocą komendy !unban ({msg_user}).")
+        logging.error(f"\n\nUżytkownik {user_error} próbwował kogoś odbanować za pomocą komendy !unban ({msg_user}).\n")
 
 
 # @client.event
