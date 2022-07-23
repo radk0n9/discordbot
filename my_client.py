@@ -30,8 +30,23 @@ class MyClient(commands.Bot):
         self.report_a_problem()
 
     async def on_ready(self):
-        activity = discord.Game(name="Jest problem? !zglos")
-        await self.change_presence(activity=activity)
+        channel = self.get_channel(999616411909496992)
+        content = (await channel.history(limit=1).flatten())[0].embeds[0].description
+        if content == "*Aktywny* :green_circle:":
+            activity = discord.Game(name="Jest problem? !zglos")
+            status_bot = discord.Status.online
+            await self.change_presence(status=status_bot, activity=activity)
+            logging.info(f"\n\nUstawiono status bota na: Aktywny.\n\n")
+        if content == "*Prace techniczne* :yellow_circle:":
+            activity = discord.Game(name="RaDkon mnie naprawia :)))")
+            status_bot = discord.Status.idle
+            await self.change_presence(status=status_bot, activity=activity)
+            logging.info(f"\n\nUstawiono status bota na: Prace techniczne.\n\n")
+        if content == "*Przerwa*: :no_entry:":
+            activity = discord.Game(name="Mała przerwa..")
+            status_bot = discord.Status.do_not_disturb
+            await self.change_presence(status=status_bot, activity=activity)
+            logging.info(f"\n\nUstawiono status bota na: Przerwa.\n\n")
         logging.info(f"\n\nDiscord bot working...\n")
 
     def get_token(self):
@@ -70,17 +85,6 @@ class MyClient(commands.Bot):
                 msg = f"<@{user_error.id}>, niestety nie masz uprawnień do tego!"
                 await ctx.channel.send(msg)
                 logging.warning(f"\n\nUżytkownik {user_error} próbwował usunąć wszystkie wiadomości.\n\n")
-
-    def list_users(self):
-        @self.command(name="lista")
-        async def list_of_users(ctx):
-            for guild in self.guilds:
-                members = [f"`{member.name}`\n" for member in guild.members]
-            message1 = f"Lista wszystkich użytkowników:\n"
-            message2 = "".join(members)
-            await ctx.channel.purge(limit=1)
-            await ctx.channel.send(message1 + message2)
-            logging.warning(f"\n\n{ctx.message.author.name} użył komendy !list-users.\n\n")
 
     def report_a_problem(self):
         @self.command(name="zglos")

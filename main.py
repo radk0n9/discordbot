@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+# TODO Memes random sender, twitch stream notification
 
 import discord
 import sys
@@ -48,9 +48,12 @@ message = discord.Message
 member = discord.Member
 
 client.clearing()
-client.list_users()
 client.report_a_problem()
 
+
+def reset_cooldown(ctx):
+    if ctx.message.author.id == 287292834355347456:
+        return ctx.command.reset_cooldown(ctx)
 
 @client.event
 async def on_message(msg):
@@ -365,6 +368,7 @@ async def unban_error(ctx, error):
 @client.command(name="ping")
 @has_permissions(send_messages=True)
 async def ping(ctx, username: member):
+    reset_cooldown(ctx)
     pinger = ctx.message.author
     channel = await username.create_dm()
     await ctx.channel.purge(limit=1)
@@ -395,12 +399,20 @@ async def ping_error(ctx, error):
 @client.command(name="komendy")
 @has_permissions(send_messages=True)
 async def komendy(ctx):
+    reset_cooldown(ctx)
     user = ctx.message.author
-    msg = f"<@{user.id}>, dostępne komendy:\n" \
-          f"`!lista - wyświetla listę wszystkich użytkowników na serwerze`\n" \
-          f"`!ping @NazwaUżytkownika - umożliwa pingowanie użytownika (proszę nie nadużywać :))`"
+    embed_msg = embed(title="Dostępne komendy na serwerze:",
+                      description="`!zglos <propozycja/problem/bug` - jeśli chcesz coś zaproponować lub"
+                                  " zgłosić problem/buga użyj tej komendy\n\n"
+                                  "`!ping @NazwaUżytkownika` - umożliwa pingowanie użytownika "
+                                  "(proszę nie nadużywać :))\n\n"
+                                  "`...` - ...\n\n"
+                                  "`...` - ...\n\n"
+                                  "*kiedyś będzie ich więcej..*",
+                      colour=discord.Colour.from_rgb(96, 223, 213))
     await ctx.channel.purge(limit=1)
-    await ctx.channel.send(msg)
+    await ctx.channel.send(embed=embed_msg)
+    logging.info(f"\n\nUżytkownik {user} użył komendy !komendy ({ctx.message.content})")
 
 
 @komendy.error
@@ -413,6 +425,56 @@ async def komendy_error(ctx, error):
         await ctx.channel.send(text)
         logging.error(f"\n\nUżytkownik {user_error} chciał za szybko użyć komendy !komendy ({msg_user})")
 
+
+@client.command(name="lista")
+@has_permissions(send_messages=True)
+async def list_of_users(ctx):
+    for guild in client.guilds:
+        members = [f"{member.name}\n" for member in guild.members]
+    embed_msg = embed(title="Lista wszystkich użytkowników:",
+                      description="".join(members),
+                      colour=discord.Colour.from_rgb(96, 223, 213))
+    await ctx.channel.purge(limit=1)
+    await ctx.channel.send(embed=embed_msg)
+    logging.info(f"\n\n{ctx.message.author.name} użył komendy !lista.\n\n")
+
+
+@client.command(name="status")
+@has_permissions(administrator=True)
+async def status(ctx, param):
+    if param == "aktywny":
+        activity = discord.Game(name="Jest problem? !zglos")
+        status_bot = discord.Status.online
+        await client.change_presence(status=status_bot, activity=activity)
+        embed_msg = embed(title="Status bota:",
+                          description="*Aktywny* :green_circle:",
+                          colour=discord.Colour.green())
+        await ctx.channel.purge(limit=2)
+        await ctx.channel.send(embed=embed_msg)
+        logging.info(f"\n\nUstawiono status bota na: Aktywny.\n\n")
+    if param == "prace-techniczne":
+        activity = discord.Game(name="RaDkon mnie naprawia :)))")
+        status_bot = discord.Status.idle
+        await client.change_presence(status=status_bot, activity=activity)
+        embed_msg = embed(title="Status bota:",
+                          description="*Prace techniczne* :yellow_circle:",
+                          colour=discord.Colour.from_rgb(255, 255, 0))
+        await ctx.channel.purge(limit=2)
+        await ctx.channel.send(embed=embed_msg)
+        logging.info(f"\n\nUstawiono status bota na: Prace techniczne.\n\n")
+    if param == "przerwa":
+        activity = discord.Game(name="Mała przerwa..")
+        status_bot = discord.Status.do_not_disturb
+        await client.change_presence(status=status_bot, activity=activity)
+        embed_msg = embed(title="Status bota:",
+                          description="*Przerwa*: :no_entry:",
+                          colour=discord.Colour.from_rgb(255, 0, 0))
+        await ctx.channel.purge(limit=2)
+        await ctx.channel.send(embed=embed_msg)
+        logging.info(f"\n\nUstawiono status bota na: Przerwa.\n\n")
+
+        #
+    # logging.info(f"\n\n{ctx.message.author.name} użył komendy !lista.\n\n")
 
 # @client.event
 # async def on_message(message):

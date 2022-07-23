@@ -28,3 +28,6 @@ siemanoo
 siemno
 SIEMANO
 Siemano
+siemka
+SIEMKA
+Siemka
