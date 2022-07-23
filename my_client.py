@@ -42,8 +42,10 @@ class MyClient(commands.Bot):
         @has_permissions(administrator=True)
         async def clear(ctx, amount=2):
             user = ctx.message.author.name
-            await ctx.channel.purge(limit=amount)
-            logging.info(f"\n\nUsuwanie {amount} wiadomości przez {user}.\n")
+            messages_deleted = await ctx.channel.purge(limit=amount)
+            total_deleted = len(messages_deleted)
+            logging.info(f"\n\nUsuwanie {total_deleted} wiadomości przez {user}.\n")
+
 
         @clear.error
         async def clear_error(ctx, error):
@@ -57,8 +59,9 @@ class MyClient(commands.Bot):
         @has_permissions(administrator=True)
         async def clear_all(ctx):
             user = ctx.message.author.name
-            await ctx.channel.purge()
-            print(f"\n\nUsuwanie wszystkich wiadomości przez {user}.\n\n")
+            messages_deleted = await ctx.channel.purge()
+            total_deleted = len(messages_deleted)
+            logging.info(f"\n\nUsuwanie {total_deleted} wiadomości przez {user}.\n\n")
 
         @clear_all.error
         async def clear_all_error(ctx, error):
@@ -69,7 +72,7 @@ class MyClient(commands.Bot):
                 logging.warning(f"\n\nUżytkownik {user_error} próbwował usunąć wszystkie wiadomości.\n\n")
 
     def list_users(self):
-        @self.command(name="list-users")
+        @self.command(name="lista")
         async def list_of_users(ctx):
             for guild in self.guilds:
                 members = [f"`{member.name}`\n" for member in guild.members]

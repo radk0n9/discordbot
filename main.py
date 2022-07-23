@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+
+
 import discord
 import sys
 from datetime import datetime
@@ -10,7 +12,8 @@ from rich.logging import RichHandler
 from my_client import MyClient
 from event import SendMessage, OnMember, OnMemberUpdate
 from role_dict import ROLE_DICT_PLEC, ROLE_DICT_WIEK, ROLE_DICT_GRY
-from discord.ext.commands import has_permissions, MissingPermissions, MemberNotFound, MissingRequiredArgument
+from discord.ext.commands import has_permissions, MissingPermissions, MemberNotFound, MissingRequiredArgument, cooldown,\
+    BucketType, CommandOnCooldown
 
 rich_handler: RichHandler = RichHandler(rich_tracebacks=True)
 rich_handler.setLevel(INFO)
@@ -52,13 +55,29 @@ client.report_a_problem()
 @client.event
 async def on_message(msg):
     channel = msg.channel
-    logging.info(f"\n\n{msg.author.name} wysłał wiadomość: <{msg.content}> na kanale: {channel}.\n")
+
     send_message = SendMessage(msg)
     content = send_message.text_hi()
     try:
         await msg.channel.send(content)
     except discord.errors.HTTPException:
         pass
+
+    try:
+        message_attachments = msg.attachments[0]
+        filename = message_attachments.filename
+        url = message_attachments.url
+        if channel.name == "🔮・mems":
+            if "https://" in msg.content or "http://" in msg.content or msg.attachments:
+                emojis = ("🤣", "🥱")
+                for emoji in emojis:
+                    await msg.add_reaction(emoji)
+
+                logging.info(f"Dodano reakcje: {emojis} do wiadomości {msg.author.name} o treści <{msg.content},"
+                             f" nazwa pliki: {filename}, link do pliku: {url}> na kanale: {channel}")
+    except IndexError:
+        logging.info(f"\n\n{msg.author.name} wysłał wiadomość: <{msg.content}> na kanale: {channel}.\n")
+
     await client.process_commands(msg)
 
 
@@ -340,6 +359,59 @@ async def unban_error(ctx, error):
         text = f"<@{user_error.id}>, niestety nie masz uprawnień do tego!"
         await ctx.channel.send(text)
         logging.error(f"\n\nUżytkownik {user_error} próbwował kogoś odbanować za pomocą komendy !unban ({msg_user}).\n")
+
+
+@cooldown(1, 30, BucketType.user)
+@client.command(name="ping")
+@has_permissions(send_messages=True)
+async def ping(ctx, username: member):
+    pinger = ctx.message.author
+    channel = await username.create_dm()
+    await ctx.channel.purge(limit=1)
+    await channel.send(f"*PING* -> Dostałeś **PING'a** od użytkownika **{pinger.name}**! <- *PING* // "
+                       f"Serwer: **{client.get_guild(944920041361661952).name}**")
+
+
+@ping.error
+async def ping_error(ctx, error):
+    user_error = ctx.message.author
+    msg_user = ctx.message.content
+    logging.error(f"\n\nERROR PING: {error}\n")
+    if isinstance(error, MissingRequiredArgument):
+        text = f"<@{user_error.id}>, spóbuj użyć: `!ping @NazwaUżytkownika`"
+        await ctx.channel.send(text)
+        logging.error(f"\n\nUżytkownik {user_error} źle użył komendy !ping ({msg_user})\n")
+    if isinstance(error, MemberNotFound):
+        text = f"<@{user_error.id}>, nie ma takiego użytkownika na serwerze! Sprawdź dokładniej :)"
+        await ctx.channel.send(text)
+        logging.error(f"\n\nUżytkownik {user_error} chciał dać pinga komuś kogo nie ma serwerze ({msg_user})")
+    if isinstance(error, CommandOnCooldown):
+        text = f"<@{user_error.id}>, spokojnie spokojnie, nie spiesz się tak z tym :D. Spróbuj ponownie za {error.retry_after:.2f}s"
+        await ctx.channel.send(text)
+        logging.error(f"\n\nUżytkownik {user_error} chciał za szybko użyć komendy !ping ({msg_user})")
+
+
+@cooldown(1, 30, BucketType.user)
+@client.command(name="komendy")
+@has_permissions(send_messages=True)
+async def komendy(ctx):
+    user = ctx.message.author
+    msg = f"<@{user.id}>, dostępne komendy:\n" \
+          f"`!lista - wyświetla listę wszystkich użytkowników na serwerze`\n" \
+          f"`!ping @NazwaUżytkownika - umożliwa pingowanie użytownika (proszę nie nadużywać :))`"
+    await ctx.channel.purge(limit=1)
+    await ctx.channel.send(msg)
+
+
+@komendy.error
+async def komendy_error(ctx, error):
+    user_error = ctx.message.author
+    msg_user = ctx.message.content
+    logging.error(f"\n\nERROR KOMENDY: {error}\n")
+    if isinstance(error, CommandOnCooldown):
+        text = f"<@{user_error.id}>, ejj ty, czemu tak nadużywasz tej komendy? Poczekaj {error.retry_after:.2f}s i spróbuj ponownie."
+        await ctx.channel.send(text)
+        logging.error(f"\n\nUżytkownik {user_error} chciał za szybko użyć komendy !komendy ({msg_user})")
 
 
 # @client.event
