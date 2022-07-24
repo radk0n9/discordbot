@@ -1,6 +1,7 @@
 # TODO 1  twitch stream notification
 # TODO 2 MEE6 check some new features
 # TODO 3 Creating channel for someone
+# TODO 4 if someone write to bot send to channel
 
 import discord
 import sys
@@ -290,7 +291,7 @@ async def info_about(ctx, *, username: discord.Member=" "):
         if len(username.roles) > 1:
             role_string = " ".join([role.mention for role in username.roles[1:]])
             embed_msg.add_field(name=f"Role [{len(username.roles)-1}]", value=role_string, inline=False)
-        embed_msg.add_field(name=f"Uprawnienia [{len(permission)}]", value=permission_string, inline=False)
+        # embed_msg.add_field(name=f"Uprawnienia [{len(permission)}]", value=permission_string, inline=False)
         embed_msg.set_footer(text=username.id)
         await ctx.channel.purge(limit=1)
         await ctx.channel.send(embed=embed_msg)
@@ -325,7 +326,7 @@ async def info_about(ctx, *, username: discord.Member=" "):
         if len(username.roles) > 1:
             role_string = " ".join([role.mention for role in username.roles[1:]])
             embed_msg.add_field(name=f"Role [{len(username.roles)-1}]", value=role_string, inline=False)
-        embed_msg.add_field(name=f"Uprawnienia [{len(permission)}]", value=permission_string, inline=False)
+        # embed_msg.add_field(name=f"Uprawnienia [{len(permission)}]", value=permission_string, inline=False)
         embed_msg.set_footer(text=username.id)
         await ctx.channel.purge(limit=1)
         await ctx.channel.send(embed=embed_msg)
