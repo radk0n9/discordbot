@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import discord
 import random
 import logging
@@ -8,8 +7,6 @@ from my_client import MyClient
 
 intents = discord.Intents.all()
 client = MyClient(command_prefix="!", intents=intents, self_bot=False)
-# file = open("log.txt", "a", encoding="utf-8")
-# sys.stdout = file
 
 
 def now_time():
