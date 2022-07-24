@@ -57,6 +57,7 @@ class MyClient(commands.Bot):
         @has_permissions(administrator=True)
         async def clear(ctx, amount=2):
             user = ctx.message.author.name
+            await ctx.channel.purge(limit=1)
             messages_deleted = await ctx.channel.purge(limit=amount)
             total_deleted = len(messages_deleted)
             logging.info(f"\n\nUsuwanie {total_deleted} wiadomości przez {user}.\n")
@@ -93,7 +94,10 @@ class MyClient(commands.Bot):
             channel = ctx.channel.id
             member = ctx.message.author
             await ctx.channel.purge(limit=1)
-            await ctx.send(f'<@{member.id}>, dziękuję za zgłoszenie o treści: `{problem}`')
+            msg = await ctx.send(f'<@{member.id}>, dziękuję za zgłoszenie o treści: `{problem}`')
+            emojis = ["👍🏼", "👎🏼"]
+            for emoji in emojis:
+                await msg.add_reaction(emoji=emoji)
             await channel_problemy.send(f"**Problem/Bug/Propozycja:**\n"
                                         f"\n{problem}\n"
                                         f"\nZgłoszone przez <@{member.id}>")

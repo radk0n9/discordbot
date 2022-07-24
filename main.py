@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-# TODO Memes random sender, twitch stream notification
+# TODO 1  twitch stream notification
+# TODO 2 MEE6 check some new features
 
 import discord
 import sys
+import requests
 from datetime import datetime
 import os
 import logging
@@ -14,6 +16,7 @@ from event import SendMessage, OnMember, OnMemberUpdate
 from role_dict import ROLE_DICT_PLEC, ROLE_DICT_WIEK, ROLE_DICT_GRY
 from discord.ext.commands import has_permissions, MissingPermissions, MemberNotFound, MissingRequiredArgument, cooldown,\
     BucketType, CommandOnCooldown
+
 
 rich_handler: RichHandler = RichHandler(rich_tracebacks=True)
 rich_handler.setLevel(INFO)
@@ -35,6 +38,13 @@ def now_time():
     now = datetime.now()
     date_time = now.strftime("%d-%m-%Y %H:%M:%S")
     return date_time
+
+
+def random_mem():
+    response = requests.get(url="https://ivall.pl/memy")
+    response.raise_for_status()
+    data = response.json()
+    return data["url"]
 
 
 intents = discord.Intents.all()
@@ -72,7 +82,7 @@ async def on_message(msg):
         url = message_attachments.url
         if channel.name == "🔮・mems":
             if "https://" in msg.content or "http://" in msg.content or msg.attachments:
-                emojis = ("🤣", "🥱")
+                emojis = ["🤣", "🥱"]
                 for emoji in emojis:
                     await msg.add_reaction(emoji)
 
@@ -370,10 +380,20 @@ async def unban_error(ctx, error):
 async def ping(ctx, username: member):
     reset_cooldown(ctx)
     pinger = ctx.message.author
-    channel = await username.create_dm()
+    avatar_pinger = ctx.author.avatar_url
     await ctx.channel.purge(limit=1)
-    await channel.send(f"*PING* -> Dostałeś **PING'a** od użytkownika **{pinger.name}**! <- *PING* // "
-                       f"Serwer: **{client.get_guild(944920041361661952).name}**")
+    embed_msg = embed(title="PING!",
+                      description=f"Dostałeś **PING'a** od użytkownika **{pinger.name}**!\n\n"
+                                  f"Serwer: **{client.get_guild(944920041361661952).name}**",
+                      colour=discord.Colour.random())
+    embed_msg.timestamp = datetime.utcnow()
+    embed_msg.set_footer(text="PING")
+    embed_msg.set_thumbnail(url=avatar_pinger)
+    # embed_msg.add_field(name="Field1", value="Value1")
+    # embed_msg.add_field(name="Field2", value="Value2")
+    # embed_msg.add_field(name="Field3", value="Value3", inline=False)
+    channel = await username.create_dm()
+    await channel.send(embed=embed_msg)
 
 
 @ping.error
@@ -406,10 +426,13 @@ async def komendy(ctx):
                                   " zgłosić problem/buga użyj tej komendy\n\n"
                                   "`!ping @NazwaUżytkownika` - umożliwa pingowanie użytownika "
                                   "(proszę nie nadużywać :))\n\n"
+                                  "`!losowy-mem` - umożliwia wysłanie losowego mema ze strony memy.pl\n\n"
                                   "`...` - ...\n\n"
                                   "`...` - ...\n\n"
                                   "*kiedyś będzie ich więcej..*",
                       colour=discord.Colour.from_rgb(96, 223, 213))
+    embed_msg.set_footer(text="komendy")
+    embed_msg.timestamp = datetime.utcnow()
     await ctx.channel.purge(limit=1)
     await ctx.channel.send(embed=embed_msg)
     logging.info(f"\n\nUżytkownik {user} użył komendy !komendy ({ctx.message.content})")
@@ -442,6 +465,7 @@ async def list_of_users(ctx):
 @client.command(name="status")
 @has_permissions(administrator=True)
 async def status(ctx, param):
+
     if param == "aktywny":
         activity = discord.Game(name="Jest problem? !zglos")
         status_bot = discord.Status.online
@@ -449,6 +473,8 @@ async def status(ctx, param):
         embed_msg = embed(title="Status bota:",
                           description="*Aktywny* :green_circle:",
                           colour=discord.Colour.green())
+        embed_msg.timestamp = datetime.utcnow()
+        embed_msg.set_footer(text="RaDkon")
         await ctx.channel.purge(limit=2)
         await ctx.channel.send(embed=embed_msg)
         logging.info(f"\n\nUstawiono status bota na: Aktywny.\n\n")
@@ -459,6 +485,8 @@ async def status(ctx, param):
         embed_msg = embed(title="Status bota:",
                           description="*Prace techniczne* :yellow_circle:",
                           colour=discord.Colour.from_rgb(255, 255, 0))
+        embed_msg.timestamp = datetime.utcnow()
+        embed_msg.set_footer(text="RaDkon")
         await ctx.channel.purge(limit=2)
         await ctx.channel.send(embed=embed_msg)
         logging.info(f"\n\nUstawiono status bota na: Prace techniczne.\n\n")
@@ -469,12 +497,44 @@ async def status(ctx, param):
         embed_msg = embed(title="Status bota:",
                           description="*Przerwa*: :no_entry:",
                           colour=discord.Colour.from_rgb(255, 0, 0))
+        embed_msg.timestamp = datetime.utcnow()
+        embed_msg.set_footer(text="RaDkon")
         await ctx.channel.purge(limit=2)
         await ctx.channel.send(embed=embed_msg)
         logging.info(f"\n\nUstawiono status bota na: Przerwa.\n\n")
 
-        #
-    # logging.info(f"\n\n{ctx.message.author.name} użył komendy !lista.\n\n")
+
+@cooldown(1, 5, BucketType.user)
+@client.command(name="losowy-mem")
+@has_permissions(send_messages=True)
+async def losowy_mem(ctx):
+    reset_cooldown(ctx)
+    username = ctx.message.author
+    channel_mems = client.get_channel(int(1000405621444710460))
+    print(channel_mems)
+    if channel_mems.name == ctx.channel.name:
+        await ctx.channel.purge(limit=1)
+        mem = random_mem()
+        msg = await channel_mems.send(mem)
+        emojis = ["🤣", "🥱"]
+        for emoji in emojis:
+            await msg.add_reaction(emoji)
+        logging.info(f"{username} wykorzystał komende !losowy-mem do losowego mema: {mem}")
+    else:
+        await ctx.channel.send(f"<@{username.id}>, używasz złego kanału. Przejdź na <#{channel_mems.id}>")
+        logging.warning(f"{username} użył złego kanału do wysłania mema (#{ctx.channel.name})")
+
+
+@losowy_mem.error
+async def losowy_mem(ctx, error):
+    user_error = ctx.message.author
+    msg_user = ctx.message.content
+    logging.error(f"\n\nERROR LOSOWY-MEM: {error}\n")
+    if isinstance(error, CommandOnCooldown):
+        text = f"<@{user_error.id}>, poczekaj jeszcze chwilkę, dawka nowych memów już za: {error.retry_after:.2f}s."
+        await ctx.channel.send(text)
+        logging.error(f"\n\nUżytkownik {user_error} chciał za szybko użyć komendy !losoyw-mem ({msg_user})")
+
 
 # @client.event
 # async def on_message(message):

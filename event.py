@@ -60,6 +60,7 @@ class OnMember:
         logging.info(f"\n\nUżytkownik {member.name} opuścił serwer.\n")
         return message
 
+
 class OnMemberUpdate:
     def __init__(self, before, after):
         self.before = before
