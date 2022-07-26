@@ -11,13 +11,10 @@ import os
 import random
 from dotenv import load_dotenv
 import logging
-from logging import StreamHandler, FileHandler, Formatter
-from logging import INFO, DEBUG, NOTSET
+from logging import FileHandler, Formatter
+from logging import INFO, NOTSET
 from rich.logging import RichHandler
 from discord.ext import commands
-from discord.ext.commands import has_permissions, MissingPermissions, MemberNotFound, MissingRequiredArgument, cooldown, \
-    BucketType, CommandOnCooldown, CommandInvokeError
-from role_dict import ROLE_DICT_PLEC, ROLE_DICT_WIEK, ROLE_DICT_GRY
 
 
 # Token section
