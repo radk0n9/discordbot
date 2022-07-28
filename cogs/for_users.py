@@ -3,6 +3,9 @@ import logging
 import requests
 from datetime import datetime
 from discord.ext import commands
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql.expression import desc
 
 embed = discord.Embed
 guild = discord.Guild
@@ -66,12 +69,12 @@ def user_no_exist(username):
 
 
 def user_no_exist_logging(username, message_content):
-    return logging.error(f"Użytkownik {username} próbwował ({message_content}) użytkownikowi, którego  "
+    return logging.error(f"Użytkownik {username} próbwował <{message_content}> użytkownikowi, którego  "
                          f"nie ma na serwerze.")
 
 
 def using_command_logging_info(context, message_content):
-    return logging.info(f"{context.message.author.name} użył komendy {message_content}.")
+    return logging.info(f"Użytkownik {context.message.author} użył komendy <{message_content}>.")
 
 
 def wrong_uses(function, username, t=None):
@@ -88,8 +91,21 @@ def wrong_uses_logging(function, username, message_content, t=None):
         t = f"!{function}"
     if function == "ping":
         t = f"!{function}"
-    msg = f"Użytkownik {username} źle użył komendy `{t}` ({message_content})."
+    msg = f"Użytkownik {username} źle użył komendy <`{t}` {message_content}>."
     return logging.warning(msg)
+
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////Users/konradpawelec/PycharmProjects/discordbot/messages-ranking.db"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+
+
+class Messages(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    id_user = db.Column(db.Integer, unique=True, nullable=False)
+    username = db.Column(db.String(250), unique=True, nullable=False)
+    value = db.Column(db.Integer, nullable=False)
 
 
 class ForUsers(commands.Cog):
@@ -102,15 +118,24 @@ class ForUsers(commands.Cog):
         channel_problemy = self.client.get_channel(996485249989103616)
         # channel = ctx.channel.id
         username = ctx.message.author
-        await ctx.channel.purge(limit=1)
-        msg = await ctx.send(f'<@{username.id}>, dziękuję za zgłoszenie o treści: `{problem}`')
-        emojis = ["👍🏼", "👎🏼"]
+        bot = self.client.user
+        embed_msg = embed(title="Dziękuję za zgłoszenie :)",
+                          description="",
+                          colour=discord.Colour.random())
+        embed_msg.set_author(name=bot.display_name, icon_url=bot.avatar_url)
+        embed_msg.set_thumbnail(url=username.avatar_url)
+        embed_msg.add_field(name="Treść", value=problem)
+        embed_msg.add_field(name="Zgłoszone przez", value=username.mention)
+        embed_msg.set_footer(text="zglos")
+        embed_msg.timestamp = datetime.utcnow()
+        msg = await ctx.send(embed=embed_msg)
+        emojis = ["👍", "👎"]
         for emoji in emojis:
             await msg.add_reaction(emoji=emoji)
         await channel_problemy.send(f"**Problem/Bug/Propozycja:**\n"
                                     f"\n{problem}\n"
                                     f"\nZgłoszone przez <@{username.id}>")
-        using_command_logging_info(ctx, problem)
+        using_command_logging_info(ctx, ctx.message.content)
 
     @report_a_problem.error
     async def report_a_problem_error(self, ctx, error):
@@ -157,7 +182,7 @@ class ForUsers(commands.Cog):
         if isinstance(error, commands.CommandOnCooldown):
             text = f"<@{user_error.id}>, spokojnie spokojnie, nie spiesz się tak z tym :D. Spróbuj ponownie za {error.retry_after:.2f}s"
             await ctx.channel.send(text)
-            logging.error(f"Użytkownik {user_error} chciał za szybko użyć komendy !ping ({msg_user_content})")
+            logging.error(f"Użytkownik {user_error} chciał za szybko użyć komendy <!ping {msg_user_content}>")
 
     @commands.cooldown(1, 30, commands.BucketType.user)
     @commands.command(name="komendy")
@@ -174,7 +199,7 @@ class ForUsers(commands.Cog):
                                       "`!losowy-mem` - umożliwia wysłanie losowego mema ze strony memy.pl\n\n"
                                       "`!info` - możesz sprawdzić informacje o sobie lub o innych użytkownikach np."
                                       " !info @NazwaUżytkownika\n\n"
-                                      "`...` - ...\n\n"
+                                      "`!ranking` - wyświetla ranking wysłanych wiadomości na serwerze\n\n"
                                       "`...` - ...\n\n"
                                       "*kiedyś będzie ich więcej..*",
                           colour=discord.Colour.from_rgb(96, 223, 213))
@@ -245,7 +270,7 @@ class ForUsers(commands.Cog):
             using_command_logging_info(ctx, msg_user_content)
 
     @info_about.error
-    async def info_mem(self, ctx, error):
+    async def info_error(self, ctx, error):
         user_error = ctx.message.author
         msg_user_content = ctx.message.content
         logging.error(f"ERROR INFO-ABOUT: {error}")
@@ -253,6 +278,37 @@ class ForUsers(commands.Cog):
             text = user_no_exist(user_error)
             await ctx.channel.send(text)
             user_no_exist_logging(user_error, msg_user_content)
+
+    @commands.command(name="ranking")
+    @commands.has_permissions(send_messages=True)
+    async def ranking(self, ctx):
+        bot = self.client.user
+        query_message = db.session.query(Messages)
+        sorting_desc = desc(Messages.value)
+        order_by_value = query_message.order_by(sorting_desc)
+        embed_msg = embed(title="Ranking wysłanych wiadomość",
+                          description="",
+                          colour=discord.Colour.random())
+        embed_msg.set_author(name=bot.display_name, icon_url=bot.avatar_url)
+        embed_msg.timestamp = datetime.utcnow()
+        embed_msg.set_footer(text=f"{len(Messages.query.all())}")
+        ids = [result.id_user for result in order_by_value]
+        id_for_mention = [self.client.get_user(u_id).mention for u_id in ids]
+        value = [f"{result.value}\n"for result in order_by_value]
+        embed_msg.add_field(name="Użytkownik", value="\n".join(id_for_mention), inline=True)
+        embed_msg.add_field(name="Liczba wiadomości", value=" ".join(value), inline=True)
+        await ctx.channel.purge(limit=1)
+        await ctx.channel.send(embed=embed_msg)
+
+    # @ranking.error
+    # async def ranking_error(self, ctx, error):
+    #     user_error = ctx.message.author
+    #     msg_user_content = ctx.message.content
+    #     logging.error(f"ERROR INFO-ABOUT: {error}")
+    #     if isinstance(error, commands.MemberNotFound):
+    #         text = user_no_exist(user_error)
+    #         await ctx.channel.send(text)
+    #         user_no_exist_logging(user_error, msg_user_content)
 
 
 def setup(client):

@@ -1,7 +1,11 @@
+import time
 import discord
 import logging
+import os
+import sys
 from datetime import datetime
-from discord.ext import commands
+from discord.ext import commands, tasks
+
 
 embed = discord.Embed
 guild = discord.Guild
@@ -11,11 +15,11 @@ member = discord.Member
 
 
 def using_command_logging_info(context, message_content):
-    return logging.info(f"{context.message.author.name} użył komendy {message_content}.")
+    return logging.info(f"Użytkownik {context.message.author} użył komendy <{message_content}>.")
 
 
 def no_permission_logging_warning(username, message_content):
-    return logging.warning(f"Użytkownik {username} próbwował próbował użyć komendy {message_content},"
+    return logging.warning(f"Użytkownik {username} próbwował próbował użyć komendy <{message_content}>,"
                            f"do której nie posiada uprawnień.")
 
 
@@ -26,7 +30,7 @@ def no_permission(username):
 
 def deleting_message_logging_info(total_message, username, message_content):
     return logging.info(f"Usuwanie {total_message} wiadomości przez {username} używając komendy "
-                        f"{message_content}")
+                        f"<{message_content}>")
 
 
 def action_logging_warning(function, context, username_action, reason, delete_message_days=None, t=None):
@@ -36,7 +40,7 @@ def action_logging_warning(function, context, username_action, reason, delete_me
         t = f"zbanował (usunięto wiadomości z {delete_message_days})"
     if function == "unban":
         t = "odbanował"
-    msg = f"{context.message.author.name} {t} {username_action.display_name} za: {reason}."
+    msg = f"Użytkownik {context.message.author} {t} {username_action.display_name} za: {reason}."
     return logging.warning(msg)
 
 
@@ -46,7 +50,7 @@ def user_no_exist(username):
 
 
 def user_no_exist_logging(username, message_content):
-    return logging.error(f"Użytkownik {username} próbwował ({message_content}) użytkownikowi, którego  "
+    return logging.error(f"Użytkownik {username} próbwował <{message_content}> użytkownikowi, którego  "
                          f"nie ma na serwerze.")
 
 
@@ -68,7 +72,7 @@ def wrong_uses_logging(function, username, message_content, t=None):
         t = f"!{function}"
     if function == "unban":
         t = f"!{function}"
-    msg = f"Użytkownik {username} źle użył komendy {t} ({message_content})."
+    msg = f"Użytkownik {username} źle użył komendy <{t} {message_content}>."
     return logging.warning(msg)
 
 
@@ -90,14 +94,56 @@ def embed_action_info(function, ctx, username, bot, reason, what=None, what_happ
     embed_msg.timestamp = datetime.utcnow()
     embed_msg.set_thumbnail(url=username.avatar_url)
     embed_msg.add_field(name="Powód", value=reason, inline=False)
-    embed_msg.add_field(name="Przez", value=ctx.message.author, inline=False)
+    embed_msg.add_field(name="Przez", value=ctx.message.author.mention, inline=False)
     embed_msg.set_footer(text=username.id)
+    return embed_msg
+
+
+def status_embed(status, bot, username, t=None, colour=None, thumbnail=None):
+    if status == "aktywny":
+        t = "*Aktywny* :green_circle:"
+        colour = discord.Colour.green()
+        thumbnail = "https://cdn.discordapp.com/attachments/944928580805201930/1002177380649021481/aktywny.png"
+    if status == "prace":
+        t = "*Prace techniczne* :yellow_circle:"
+        colour = discord.Colour.from_rgb(255, 255, 0)
+        thumbnail = "https://cdn.discordapp.com/attachments/944928580805201930/1002180084133806130/prace.png"
+    if status == "przerwa":
+        t = "*Przerwa*: :no_entry:"
+        colour = discord.Colour.from_rgb(255, 0, 0)
+        thumbnail = "https://cdn.discordapp.com/attachments/944928580805201930/1002179216210661446/przerwa.png"
+
+    embed_msg = embed(title="",
+                      description="",
+                      colour=colour)
+    embed_msg.set_author(name=bot.display_name, icon_url=bot.avatar_url)
+    embed_msg.set_thumbnail(url=thumbnail)
+    embed_msg.add_field(name="Status", value=t)
+    embed_msg.add_field(name="Ustawiony przez", value=username.mention)
+    embed_msg.timestamp = datetime.utcnow()
+    embed_msg.set_footer(text="RaDkon")
     return embed_msg
 
 
 class Moderation(commands.Cog):
     def __init__(self, client):
         self.client = client
+
+    @commands.command(name="restart")
+    @commands.has_permissions(administrator=True)
+    async def restart(self, ctx):
+        bot = self.client.user
+        embed_msg = embed(title="Restartowanie bota..",
+                          description="",
+                          colour=discord.Colour.random())
+        embed_msg.set_author(name=bot.display_name, icon_url=bot.avatar_url)
+        embed_msg.timestamp = datetime.utcnow()
+        embed_msg.set_footer(text="")
+        await ctx.channel.purge(limit=1)
+        await ctx.send(embed=embed_msg)
+        os.system("clear")
+        os.execv(sys.executable, ['python'] + sys.argv)
+        await ctx.channel.send(f"**Zostałem ponownie uruchomiony. Dzięki {ctx.message.author.mention}!**")
 
     @commands.command(name="list-users")
     @commands.has_permissions(administrator=True)
@@ -266,15 +312,13 @@ class Moderation(commands.Cog):
     @commands.command(name="status")
     @commands.has_permissions(administrator=True)
     async def status(self, ctx, param):
+        bot = self.client.user
+        username = ctx.message.author
         if param == "aktywny":
             activity = discord.Game(name="Jest problem? !zglos")
             status_bot = discord.Status.online
             await self.client.change_presence(status=status_bot, activity=activity)
-            embed_msg = embed(title="Status bota:",
-                              description="*Aktywny* :green_circle:",
-                              colour=discord.Colour.green())
-            embed_msg.timestamp = datetime.utcnow()
-            embed_msg.set_footer(text="RaDkon")
+            embed_msg = status_embed(param, bot, username)
             await ctx.channel.purge(limit=2)
             await ctx.channel.send(embed=embed_msg)
             logging.info(f"Ustawiono status bota na: Aktywny.")
@@ -282,10 +326,7 @@ class Moderation(commands.Cog):
             activity = discord.Game(name="RaDkon mnie naprawia :)))")
             status_bot = discord.Status.idle
             await self.client.change_presence(status=status_bot, activity=activity)
-            embed_msg = embed(title="Status bota:",
-                              description="*Prace techniczne* :yellow_circle:",
-                              colour=discord.Colour.from_rgb(255, 255, 0))
-            embed_msg.timestamp = datetime.utcnow()
+            embed_msg = status_embed(param, bot, username)
             embed_msg.set_footer(text="RaDkon")
             await ctx.channel.purge(limit=2)
             await ctx.channel.send(embed=embed_msg)
@@ -294,11 +335,7 @@ class Moderation(commands.Cog):
             activity = discord.Game(name="Mała przerwa..")
             status_bot = discord.Status.do_not_disturb
             await self.client.change_presence(status=status_bot, activity=activity)
-            embed_msg = embed(title="Status bota:",
-                              description="*Przerwa*: :no_entry:",
-                              colour=discord.Colour.from_rgb(255, 0, 0))
-            embed_msg.timestamp = datetime.utcnow()
-            embed_msg.set_footer(text="RaDkon")
+            embed_msg = status_embed(param, bot, username)
             await ctx.channel.purge(limit=2)
             await ctx.channel.send(embed=embed_msg)
             logging.info(f"Ustawiono status bota na: Przerwa.")
