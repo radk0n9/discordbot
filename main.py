@@ -4,7 +4,6 @@
 # TODO 4 Automod spam!
 # TODO 5 Change on_remove event when someone was kicked
 import time
-
 import discord
 import requests
 from datetime import datetime
@@ -18,6 +17,7 @@ from rich.logging import RichHandler
 from discord.ext import commands
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from discord.errors import HTTPException
 
 # Token section
 load_dotenv()
@@ -42,7 +42,7 @@ intents.members = True
 intents.messages = True
 client = commands.Bot(command_prefix="!", intents=intents, self_bot=False)
 
-# embed = discord.Embed
+embed = discord.Embed
 # user = discord.User
 # message = discord.Message
 # member = discord.Member
@@ -146,18 +146,21 @@ async def on_message(message):
 
     # Informing when someone send direct message to bot
     if "Direct Message" in str(channel):
-        channel_dm = client.get_channel(1002191158438539364)
-        username = message.author
-        embed_msg = embed(title=f"Wiadomość od {username}",
-                          description="",
-                          colour=discord.Colour.random())
-        embed_msg.set_author(name=bot.display_name, icon_url=bot.avatar_url)
-        embed_msg.set_thumbnail(url=username.avatar_url)
-        embed_msg.add_field(name="Treść", value=message.content)
-        embed_msg.set_footer(text=channel)
-        embed_msg.timestamp = datetime.utcnow()
-        await channel_dm.send(embed=embed_msg)
-        logging.info(f"{channel} - prywatna wiadomość do {bot.name} o treści: <{message.content}>")
+        try:
+            channel_dm = client.get_channel(1002191158438539364)
+            username = message.author
+            embed_msg = embed(title=f"Wiadomość od {username}",
+                              description="",
+                              colour=discord.Colour.random())
+            embed_msg.set_author(name=bot.display_name, icon_url=bot.avatar_url)
+            embed_msg.set_thumbnail(url=username.avatar_url)
+            embed_msg.add_field(name="Treść", value=message.content)
+            embed_msg.set_footer(text=channel)
+            embed_msg.timestamp = datetime.utcnow()
+            await channel_dm.send(embed=embed_msg)
+            logging.info(f"{channel} - prywatna wiadomość do {bot.name} o treści: <{message.content}>")
+        except HTTPException:
+            pass
 
     # Logging if statement for clearly logging information
     if "!" not in message.content:
