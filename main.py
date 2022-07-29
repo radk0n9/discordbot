@@ -285,7 +285,7 @@ async def on_voice_state_update(member, before, after):
     try:
         cat = client.get_channel(1002538949463515196)
         if after.channel.id == 1002508594304000121:
-            if not before.channel or before.channel and after.channel.id == 1002508594304000121:
+            if not before.channel or before.channel:
                 username_channel = str(member)
                 logging.info(f"<{member}> stworzył swój kanał przy pomocy kanału <{after.channel.name}>")
                 own_channel_user = await guild.create_voice_channel(name=username_channel, category=cat,
@@ -295,11 +295,11 @@ async def on_voice_state_update(member, before, after):
     except AttributeError:
         pass
 
-    if before.channel and not after.channel or after.channel:
+    if before.channel != after.channel:
         try:
             if before.channel.id == own_channel_user.id:
-                logging.info(f"Użytkownik <{member}> opuścił kanał <{own_channel_user.name}>, usunięto kanał")
-                await own_channel_user.delete()
+                    logging.info(f"Użytkownik <{member}> opuścił kanał <{own_channel_user.name}>, usunięto kanał")
+                    await own_channel_user.delete()
         except (NameError, AttributeError) as error:
             pass
 
