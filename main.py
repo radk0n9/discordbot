@@ -280,21 +280,40 @@ async def on_member_update(before, after):
 async def on_voice_state_update(member, before, after):
     guild_server_id = member.guild.id
     guild = client.get_guild(int(guild_server_id))
+    owner_id = 287292834355347456
     global own_channel_user
-    if not before.channel and after.channel.id == 1002508594304000121:
+    try:
         cat = client.get_channel(1002538949463515196)
-        username_channel = str(member)
-        logging.info(f"<{member}> stworzył swój kanał przy pomocy kanału <{after.channel.name}>")
-        own_channel_user = await guild.create_voice_channel(name=username_channel, category=cat,
-                                                            topic=f"Kanał użytkownik {username_channel}")
-        logging.info(f"Przeniesiono użytkownika <{member}> na kanał <{own_channel_user.name}>")
-        await member.move_to(own_channel_user)
+        if after.channel.id == 1002508594304000121:
+            if not before.channel or before.channel and after.channel.id == 1002508594304000121:
+                username_channel = str(member)
+                logging.info(f"<{member}> stworzył swój kanał przy pomocy kanału <{after.channel.name}>")
+                own_channel_user = await guild.create_voice_channel(name=username_channel, category=cat,
+                                                                    topic=f"Kanał użytkownik {username_channel}")
+                logging.info(f"Przeniesiono użytkownika <{member}> na kanał <{own_channel_user.name}>")
+                await member.move_to(own_channel_user)
+    except AttributeError:
+        pass
 
-    if before.channel and not after.channel:
-        if before.channel.id == own_channel_user.id:
-            logging.info(f"Użytkownik <{member}> opuścił kanał <{own_channel_user.name}>, usunięto kanał")
-            await own_channel_user.delete()
+    if before.channel and not after.channel or after.channel:
+        try:
+            if before.channel.id == own_channel_user.id:
+                logging.info(f"Użytkownik <{member}> opuścił kanał <{own_channel_user.name}>, usunięto kanał")
+                await own_channel_user.delete()
+        except (NameError, AttributeError) as error:
+            pass
 
+    if member.id == owner_id:
+        if after.mute or after.deaf:
+            logging.warning(f"Ktoś próbował wyciszyć administratora.")
+            await member.edit(mute=False, deafen=False)
+
+    if member.move_to and member.id == owner_id:
+        try:
+            if before.channel.id == 1002595460160172202 and not after.channel:
+                pass
+        except AttributeError:
+            pass
 
 
 client.run(DISCORD_TOKEN)
