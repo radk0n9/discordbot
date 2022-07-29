@@ -1,3 +1,5 @@
+import sys
+
 import discord
 import logging
 import requests
@@ -6,6 +8,7 @@ from discord.ext import commands
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql.expression import desc
+from discord.errors import HTTPException
 
 embed = discord.Embed
 guild = discord.Guild
@@ -96,8 +99,10 @@ def wrong_uses_logging(function, username, message_content, t=None):
 
 
 app = Flask(__name__)
-# app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////Users/konradpawelec/PycharmProjects/discordbot/messages-ranking.db"
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///C:\\Users\\konra\\discordbot\\messages-ranking.db"
+if sys.platform.startswith("darwin"):
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////Users/konradpawelec/PycharmProjects/discordbot/discord-bot-database.db"
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///C:\\Users\\konra\\discordbot\\discord-bot-database.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -105,7 +110,6 @@ db = SQLAlchemy(app)
 class Messages(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_user = db.Column(db.Integer, unique=True, nullable=False)
-    username = db.Column(db.String(250), unique=True, nullable=False)
     value = db.Column(db.Integer, nullable=False)
 
 
@@ -116,6 +120,7 @@ class ForUsers(commands.Cog):
     @commands.command(name="zglos")
     @commands.has_permissions(send_messages=True)
     async def report_a_problem(self, ctx, *, problem):
+        using_command_logging_info(ctx, ctx.message.content)
         channel_problemy = self.client.get_channel(996485249989103616)
         # channel = ctx.channel.id
         username = ctx.message.author
@@ -136,21 +141,21 @@ class ForUsers(commands.Cog):
         await channel_problemy.send(f"**Problem/Bug/Propozycja:**\n"
                                     f"\n{problem}\n"
                                     f"\nZgłoszone przez <@{username.id}>")
-        using_command_logging_info(ctx, ctx.message.content)
 
     @report_a_problem.error
     async def report_a_problem_error(self, ctx, error):
         user_error = ctx.message.author
         msg_user_content = ctx.message.content
         if isinstance(error, commands.MissingRequiredArgument):
+            wrong_uses_logging("zglos", user_error, msg_user_content)
             msg = wrong_uses("zglos", user_error)
             await ctx.channel.send(msg)
-            wrong_uses_logging("zglos", user_error, msg_user_content)
 
     @commands.cooldown(1, 30, commands.BucketType.user)
     @commands.command(name="ping")
     @commands.has_permissions(send_messages=True)
-    async def ping(self, ctx, username: member, *, message="*brak wiadomości*"):
+    async def ping(self, ctx, username: member, *, message_c="*brak wiadomości*"):
+        using_command_logging_info(ctx, ctx.message.content)
         reset_cooldown(ctx)
         pinger = ctx.message.author
         avatar_pinger = ctx.author.avatar_url
@@ -162,36 +167,38 @@ class ForUsers(commands.Cog):
         embed_msg.timestamp = datetime.utcnow()
         embed_msg.set_footer(text="PING")
         embed_msg.set_thumbnail(url=avatar_pinger)
-        embed_msg.add_field(name="Wiadomość", value=message, inline=False)
+        embed_msg.add_field(name="Wiadomość", value=message_c, inline=False)
         embed_msg.add_field(name="Serwer", value=self.client.get_guild(944920041361661952).name, inline=False)
         channel = await username.create_dm()
         await channel.send(embed=embed_msg)
 
     @ping.error
     async def ping_error(self, ctx, error):
+        reset_cooldown(ctx)
         user_error = ctx.message.author
         msg_user_content = ctx.message.content
         logging.error(f"ERROR PING: {error}")
         if isinstance(error, commands.MissingRequiredArgument):
+            wrong_uses_logging("ping", user_error, msg_user_content)
             text = wrong_uses("ping", user_error)
             await ctx.channel.send(text)
-            wrong_uses_logging("ping", user_error, msg_user_content)
         if isinstance(error, commands.MemberNotFound):
+            user_no_exist_logging(user_error, msg_user_content)
             text = user_no_exist(user_error)
             await ctx.channel.send(text)
-            user_no_exist_logging(user_error, msg_user_content)
         if isinstance(error, commands.CommandOnCooldown):
+            logging.error(f"Użytkownik {user_error} chciał za szybko użyć komendy <!ping {msg_user_content}>")
             text = f"<@{user_error.id}>, spokojnie spokojnie, nie spiesz się tak z tym :D. Spróbuj ponownie za {error.retry_after:.2f}s"
             await ctx.channel.send(text)
-            logging.error(f"Użytkownik {user_error} chciał za szybko użyć komendy <!ping {msg_user_content}>")
 
     @commands.cooldown(1, 30, commands.BucketType.user)
     @commands.command(name="komendy")
     @commands.has_permissions(send_messages=True)
     async def komendy(self, ctx):
+        msg_user_content = ctx.message.content
+        using_command_logging_info(ctx, msg_user_content)
         reset_cooldown(ctx)
         bot = self.client.user
-        msg_user_content = ctx.message.content
         embed_msg = embed(title="Dostępne komendy na serwerze:",
                           description="`!zglos <propozycja/problem/bug` - jeśli chcesz coś zaproponować lub"
                                       " zgłosić problem/buga użyj tej komendy\n\n"
@@ -210,17 +217,18 @@ class ForUsers(commands.Cog):
         embed_msg.timestamp = datetime.utcnow()
         await ctx.channel.purge(limit=1)
         await ctx.channel.send(embed=embed_msg)
-        using_command_logging_info(ctx, msg_user_content)
+
 
     @komendy.error
     async def komendy_error(self, ctx, error):
+        reset_cooldown(ctx)
         user_error = ctx.message.author
         msg_user = ctx.message.content
         logging.error(f"ERROR KOMENDY: {error}")
         if isinstance(error, commands.CommandOnCooldown):
+            logging.error(f"Użytkownik {user_error} chciał za szybko użyć komendy !komendy ({msg_user})")
             text = f"<@{user_error.id}>, ejj ty, czemu tak nadużywasz tej komendy? Poczekaj {error.retry_after:.2f}s i spróbuj ponownie."
             await ctx.channel.send(text)
-            logging.error(f"Użytkownik {user_error} chciał za szybko użyć komendy !komendy ({msg_user})")
 
     @commands.cooldown(1, 5, commands.BucketType.user)
     @commands.command(name="losowy-mem")
@@ -248,27 +256,27 @@ class ForUsers(commands.Cog):
         msg_user = ctx.message.content
         logging.error(f"ERROR LOSOWY-MEM: {error}")
         if isinstance(error, commands.CommandOnCooldown):
+            logging.error(f"Użytkownik {user_error} chciał za szybko użyć komendy !losoyw-mem ({msg_user})")
             text = f"<@{user_error.id}>, poczekaj jeszcze chwilkę, dawka nowych memów już za: {error.retry_after:.2f}s."
             await ctx.channel.send(text)
-            logging.error(f"Użytkownik {user_error} chciał za szybko użyć komendy !losoyw-mem ({msg_user})")
 
     @commands.command(name="info")
     @commands.has_permissions(send_messages=True)
     async def info_about(self, ctx, *, username: member = " "):
         msg_user_content = ctx.message.content
         if not username == " ":
+            using_command_logging_info(ctx, msg_user_content)
             embed_message = info_embed(ctx, username)
             await ctx.channel.purge(limit=1)
             await ctx.channel.send(f"<@{ctx.author.id}>")
             await ctx.channel.send(embed=embed_message)
-            using_command_logging_info(ctx, msg_user_content)
         else:
+            using_command_logging_info(ctx, msg_user_content)
             username = ctx.author
             embed_message = info_embed(ctx, username)
             await ctx.channel.purge(limit=1)
             await ctx.channel.send(f"<@{username.id}>")
             await ctx.channel.send(embed=embed_message)
-            using_command_logging_info(ctx, msg_user_content)
 
     @info_about.error
     async def info_error(self, ctx, error):
@@ -276,30 +284,34 @@ class ForUsers(commands.Cog):
         msg_user_content = ctx.message.content
         logging.error(f"ERROR INFO-ABOUT: {error}")
         if isinstance(error, commands.MemberNotFound):
+            user_no_exist_logging(user_error, msg_user_content)
             text = user_no_exist(user_error)
             await ctx.channel.send(text)
-            user_no_exist_logging(user_error, msg_user_content)
 
     @commands.command(name="ranking")
     @commands.has_permissions(send_messages=True)
     async def ranking(self, ctx):
+        using_command_logging_info(ctx, ctx.message.content)
         bot = self.client.user
         query_message = db.session.query(Messages)
         sorting_desc = desc(Messages.value)
         order_by_value = query_message.order_by(sorting_desc)
-        embed_msg = embed(title="Ranking wysłanych wiadomość",
-                          description="",
-                          colour=discord.Colour.random())
-        embed_msg.set_author(name=bot.display_name, icon_url=bot.avatar_url)
-        embed_msg.timestamp = datetime.utcnow()
-        embed_msg.set_footer(text=f"{len(Messages.query.all())}")
-        ids = [result.id_user for result in order_by_value]
-        id_for_mention = [self.client.get_user(u_id).mention for u_id in ids]
-        value = [f"{result.value}\n"for result in order_by_value]
-        embed_msg.add_field(name="Użytkownik", value="\n".join(id_for_mention), inline=True)
-        embed_msg.add_field(name="Liczba wiadomości", value=" ".join(value), inline=True)
-        await ctx.channel.purge(limit=1)
-        await ctx.channel.send(embed=embed_msg)
+        try:
+            embed_msg = embed(title="Ranking wysłanych wiadomość",
+                              description="",
+                              colour=discord.Colour.random())
+            embed_msg.set_author(name=bot.display_name, icon_url=bot.avatar_url)
+            embed_msg.timestamp = datetime.utcnow()
+            embed_msg.set_footer(text=f"{len(Messages.query.all())}")
+            ids = [result.id_user for result in order_by_value]
+            id_for_mention = [self.client.get_user(u_id).mention for u_id in ids]
+            value = [f"{result.value}\n"for result in order_by_value]
+            embed_msg.add_field(name="Użytkownik", value="\n".join(id_for_mention), inline=True)
+            embed_msg.add_field(name="Liczba wiadomości", value=" ".join(value), inline=True)
+            await ctx.channel.purge(limit=1)
+            await ctx.channel.send(embed=embed_msg)
+        except HTTPException:
+            await ctx.channel.send(f"{ctx.author.mention}, nie ma aktualnie żadnego rankingu.")
 
     # @ranking.error
     # async def ranking_error(self, ctx, error):

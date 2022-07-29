@@ -132,6 +132,7 @@ class Moderation(commands.Cog):
     @commands.command(name="restart")
     @commands.has_permissions(administrator=True)
     async def restart(self, ctx):
+        using_command_logging_info(ctx, ctx.message.content)
         bot = self.client.user
         embed_msg = embed(title="Restartowanie bota..",
                           description="",
@@ -148,6 +149,7 @@ class Moderation(commands.Cog):
     @commands.command(name="list-users")
     @commands.has_permissions(administrator=True)
     async def list_of_users(self, ctx):
+        using_command_logging_info(ctx, ctx.message.content)
         guild_server_id = ctx.channel.guild.id
         current_guild = self.client.get_guild(guild_server_id)
         members = [f"{member.name}\n" for member in current_guild.members]
@@ -156,7 +158,6 @@ class Moderation(commands.Cog):
                           colour=discord.Colour.from_rgb(96, 223, 213))
         await ctx.channel.purge(limit=1)
         await ctx.channel.send(embed=embed_msg)
-        using_command_logging_info(ctx, message_content="!list-users")
 
     @commands.command(name="clear")
     @commands.has_permissions(administrator=True)
@@ -173,9 +174,9 @@ class Moderation(commands.Cog):
         user_error = ctx.message.author
         msg_user_content = ctx.message.content
         if isinstance(error, commands.MissingPermissions):
+            no_permission_logging_warning(user_error, msg_user_content)
             msg = no_permission(user_error)
             await ctx.channel.send(msg)
-            no_permission_logging_warning(user_error, msg_user_content)
 
     @commands.command(name="clear-all")
     @commands.has_permissions(administrator=True)
@@ -191,9 +192,9 @@ class Moderation(commands.Cog):
         user_error = ctx.message.author
         msg_user_content = ctx.message.content
         if isinstance(error, commands.MissingPermissions):
+            no_permission_logging_warning(user_error, msg_user_content)
             msg = no_permission(user_error)
             await ctx.channel.send(msg)
-            no_permission_logging_warning(user_error, msg_user_content)
 
     @commands.command(name="kick")
     @commands.has_permissions(kick_members=True)
@@ -211,17 +212,17 @@ class Moderation(commands.Cog):
         msg_user_content = ctx.message.content
         logging.error(f"ERROR KICK: {error}")
         if isinstance(error, commands.MemberNotFound):
+            user_no_exist_logging(user_error, msg_user_content)
             text = user_no_exist(user_error)
             await ctx.channel.send(text)
-            user_no_exist_logging(user_error, msg_user_content)
         if isinstance(error, commands.MissingRequiredArgument):
+            wrong_uses_logging("kick", user_error, msg_user_content)
             text = wrong_uses("kick", user_error)
             await ctx.channel.send(text)
-            wrong_uses_logging("kick", user_error, msg_user_content)
         if isinstance(error, commands.MissingPermissions):
+            no_permission_logging_warning(user_error, msg_user_content)
             text = no_permission(user_error)
             await ctx.channel.send(text)
-            no_permission_logging_warning(user_error, msg_user_content)
 
     @commands.command(name="ban")
     @commands.has_permissions(ban_members=True)
@@ -240,18 +241,17 @@ class Moderation(commands.Cog):
         msg_user_content = ctx.message.content
         logging.error(f"ERROR BAN: {error}")
         if isinstance(error, commands.MemberNotFound):
+            user_no_exist_logging(user_error, msg_user_content)
             text = user_no_exist(user_error)
             await ctx.channel.send(text)
-            user_no_exist_logging(user_error, msg_user_content)
-            user_no_exist_logging(user_error, msg_user_content)
         if isinstance(error, commands.MissingRequiredArgument):
+            wrong_uses_logging("ban", user_error, msg_user_content)
             text = wrong_uses("ban", user_error)
             await ctx.channel.send(text)
-            wrong_uses_logging("ban", user_error, msg_user_content)
         if isinstance(error, commands.MissingPermissions):
+            no_permission_logging_warning(user_error, msg_user_content)
             text = no_permission(user_error)
             await ctx.channel.send(text)
-            no_permission_logging_warning(user_error, msg_user_content)
 
     @commands.command(name="unban")
     @commands.has_permissions(ban_members=True)
@@ -274,17 +274,17 @@ class Moderation(commands.Cog):
         msg_user_content = ctx.message.content
         logging.error(f"ERROR UNBAN: {error}")
         if isinstance(error, commands.UserNotFound):
+            user_no_exist_logging(user_error, msg_user_content)
             text = user_no_exist(user_error)
             await ctx.channel.send(text)
-            user_no_exist_logging(user_error, msg_user_content)
         if isinstance(error, commands.MissingRequiredArgument):
+            wrong_uses_logging("unban", user_error, msg_user_content)
             text = wrong_uses("unban", user_error)
             await ctx.channel.send(text)
-            wrong_uses_logging("unban", user_error, msg_user_content)
         if isinstance(error, commands.MissingPermissions):
+            no_permission_logging_warning(user_error, msg_user_content)
             text = no_permission(user_error)
             await ctx.channel.send(text)
-            no_permission_logging_warning(user_error, msg_user_content)
 
     @commands.command(name="bans")
     @commands.has_permissions(ban_members=True)
