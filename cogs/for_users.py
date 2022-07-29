@@ -120,6 +120,7 @@ class ForUsers(commands.Cog):
     @commands.command(name="zglos")
     @commands.has_permissions(send_messages=True)
     async def report_a_problem(self, ctx, *, problem):
+        await ctx.channel.purge(limit=1)
         using_command_logging_info(ctx, ctx.message.content)
         channel_problemy = self.client.get_channel(996485249989103616)
         # channel = ctx.channel.id
