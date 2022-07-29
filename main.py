@@ -3,6 +3,7 @@
 # TODO 3 Creating channel for someone
 # TODO 4 Automod spam!
 # TODO 5 Change on_remove event when someone was kicked
+
 import time
 import discord
 import requests
@@ -89,7 +90,7 @@ class OwnerMessages(db.Model):
     value = db.Column(db.Integer, nullable=False)
 
 
-db.create_all()
+# db.create_all()
 
 
 def add_new_entry(id_user, value):

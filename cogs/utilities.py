@@ -152,7 +152,7 @@ class Moderation(commands.Cog):
         using_command_logging_info(ctx, ctx.message.content)
         guild_server_id = ctx.channel.guild.id
         current_guild = self.client.get_guild(guild_server_id)
-        members = [f"{member.name}\n" for member in current_guild.members]
+        members = [f"{member_guild.name}\n" for member_guild in current_guild.members]
         embed_msg = embed(title="Lista wszystkich użytkowników:",
                           description="".join(members),
                           colour=discord.Colour.from_rgb(96, 223, 213))

@@ -1,5 +1,4 @@
 import sys
-
 import discord
 import logging
 import requests
@@ -100,7 +99,8 @@ def wrong_uses_logging(function, username, message_content, t=None):
 
 app = Flask(__name__)
 if sys.platform.startswith("darwin"):
-    app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////Users/konradpawelec/PycharmProjects/discordbot/discord-bot-database.db"
+    app.config['SQLALCHEMY_DATABASE_URI'] = \
+        "sqlite:////Users/konradpawelec/PycharmProjects/discordbot/discord-bot-database.db"
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///C:\\Users\\konra\\discordbot\\discord-bot-database.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -189,7 +189,8 @@ class ForUsers(commands.Cog):
             await ctx.channel.send(text)
         if isinstance(error, commands.CommandOnCooldown):
             logging.error(f"Użytkownik {user_error} chciał za szybko użyć komendy <!ping {msg_user_content}>")
-            text = f"<@{user_error.id}>, spokojnie spokojnie, nie spiesz się tak z tym :D. Spróbuj ponownie za {error.retry_after:.2f}s"
+            text = f"<@{user_error.id}>, spokojnie spokojnie, nie spiesz się tak z tym :D. Spróbuj ponownie za" \
+                   f" {error.retry_after:.2f}s"
             await ctx.channel.send(text)
 
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -219,7 +220,6 @@ class ForUsers(commands.Cog):
         await ctx.channel.purge(limit=1)
         await ctx.channel.send(embed=embed_msg)
 
-
     @komendy.error
     async def komendy_error(self, ctx, error):
         reset_cooldown(ctx)
@@ -228,7 +228,8 @@ class ForUsers(commands.Cog):
         logging.error(f"ERROR KOMENDY: {error}")
         if isinstance(error, commands.CommandOnCooldown):
             logging.error(f"Użytkownik {user_error} chciał za szybko użyć komendy !komendy ({msg_user})")
-            text = f"<@{user_error.id}>, ejj ty, czemu tak nadużywasz tej komendy? Poczekaj {error.retry_after:.2f}s i spróbuj ponownie."
+            text = f"<@{user_error.id}>, ejj ty, czemu tak nadużywasz tej komendy? Poczekaj {error.retry_after:.2f}s " \
+                   f"i spróbuj ponownie."
             await ctx.channel.send(text)
 
     @commands.cooldown(1, 5, commands.BucketType.user)
