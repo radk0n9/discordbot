@@ -96,7 +96,8 @@ def wrong_uses_logging(function, username, message_content, t=None):
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////Users/konradpawelec/PycharmProjects/discordbot/messages-ranking.db"
+# app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////Users/konradpawelec/PycharmProjects/discordbot/messages-ranking.db"
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///C:\\Users\\konra\\discordbot\\messages-ranking.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
