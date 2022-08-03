@@ -299,6 +299,7 @@ async def on_voice_state_update(member, before, after):
     if before.channel != after.channel:
         try:
             if before.channel.id == own_channel_user.id:
+                if str(member) == str(own_channel_user.name):
                     logging.info(f"Użytkownik <{member}> opuścił kanał <{own_channel_user.name}>, usunięto kanał")
                     await own_channel_user.delete()
         except (NameError, AttributeError) as error:
