@@ -1,0 +1,40 @@
+2022-08-03 20:26:55,500@ discord.client [INFO] login: logging in using static token
+2022-08-03 20:26:56,204@ discord.gateway [INFO] identify: Shard ID None has sent the IDENTIFY payload.
+2022-08-03 20:26:56,491@ discord.gateway [INFO] received_message: Shard ID None has connected to Gateway: ["gateway-prd-main-zsjs",{"micros":132583,"calls":["discord-sessions-green-prd-2-18",{"micros":131303,"calls":["start_session",{"micros":67655,"calls":["discord-api-77465c8cdb-k7zd9",{"micros":63293,"calls":["get_user",{"micros":18027},"add_authorized_ip",{"micros":1848},"get_guilds",{"micros":5952},"coros_wait",{"micros":2}]}]},"guilds_connect",{"micros":1,"calls":[]},"presence_connect",{"micros":24548,"calls":[]}]}]}] (Session ID: 34921555de02324e5559745764b015ba).
+2022-08-03 20:26:58,767@ root [INFO] on_ready: Ustawiono status bota na: Aktywny.
+2022-08-03 20:26:58,775@ root [INFO] on_ready: Discord bot working...
+2022-08-03 20:27:01,491@ root [INFO] using_command_logging_info: Użytkownik RaDkon#0762 użył komendy <!ranking>.
+2022-08-03 20:27:01,985@ root [INFO] on_raw_message_delete: Użytkownik RaDkon#0762 usunął wiadomość: <!ranking> na kanale: 🛠・chat-moderacji
+2022-08-03 20:27:02,334@ root [INFO] on_message: Użytkownik HiBOT#0131 wysłał wiadomość <https://discord.com/channels/944920041361661952/944928580805201930/1004455379352162304> na kanale 🛠・chat-moderacji.
+2022-08-03 20:27:09,195@ root [INFO] on_message: Użytkownik Lidku8#7618 wysłał wiadomość <a> na kanale 🛠・chat-moderacji.
+2022-08-03 20:27:12,008@ root [INFO] using_command_logging_info: Użytkownik RaDkon#0762 użył komendy <!ranking>.
+2022-08-03 20:27:12,567@ root [INFO] on_raw_message_delete: Użytkownik RaDkon#0762 usunął wiadomość: <!ranking> na kanale: 🛠・chat-moderacji
+2022-08-03 20:27:12,875@ root [INFO] on_message: Użytkownik HiBOT#0131 wysłał wiadomość <https://discord.com/channels/944920041361661952/944928580805201930/1004455423627239504> na kanale 🛠・chat-moderacji.
+2022-08-03 22:02:18,367@ discord.client [INFO] connect: Got a request to RESUME the websocket.
+2022-08-03 22:02:18,854@ discord.gateway [INFO] resume: Shard ID None has sent the RESUME payload.
+2022-08-03 22:02:19,005@ discord.gateway [INFO] received_message: Shard ID None has successfully RESUMED session 34921555de02324e5559745764b015ba under trace ["gateway-prd-main-16xf",{"micros":2415,"calls":["discord-sessions-green-prd-2-18",{"micros":17}]}].
+2022-08-03 22:48:00,467@ root [INFO] on_message: Użytkownik stachu#9324 wysłał wiadomość <praca od 4 <:Sadge:1000411481558495332>  ale kończę o jakiejś 12  <:Pepega:1000411479016734791>> na kanale 💬・chat.
+2022-08-03 23:05:44,601@ discord.client [INFO] connect: Got a request to RESUME the websocket.
+2022-08-03 23:05:45,053@ discord.gateway [INFO] resume: Shard ID None has sent the RESUME payload.
+2022-08-03 23:05:45,214@ discord.gateway [INFO] received_message: Shard ID None has successfully RESUMED session 34921555de02324e5559745764b015ba under trace ["gateway-prd-main-gmtb",{"micros":1462,"calls":["discord-sessions-green-prd-2-18",{"micros":20}]}].
+2022-08-03 23:06:17,108@ root [INFO] on_message: Użytkownik KuseV#0053 wysłał wiadomość <Oho> na kanale 💬・chat.
+2022-08-04 00:37:26,593@ discord.client [INFO] connect: Got a request to RESUME the websocket.
+2022-08-04 00:37:27,065@ discord.gateway [INFO] resume: Shard ID None has sent the RESUME payload.
+2022-08-04 00:37:27,224@ discord.gateway [INFO] received_message: Shard ID None has successfully RESUMED session 34921555de02324e5559745764b015ba under trace ["gateway-prd-main-1zgh",{"micros":3275,"calls":["discord-sessions-green-prd-2-18",{"micros":24}]}].
+2022-08-04 02:43:40,555@ discord.client [INFO] connect: Got a request to RESUME the websocket.
+2022-08-04 02:43:41,029@ discord.gateway [INFO] resume: Shard ID None has sent the RESUME payload.
+2022-08-04 02:43:41,180@ discord.gateway [INFO] received_message: Shard ID None has successfully RESUMED session 34921555de02324e5559745764b015ba under trace ["gateway-prd-main-gmtb",{"micros":3176,"calls":["discord-sessions-green-prd-2-18",{"micros":22}]}].
+2022-08-04 06:29:07,204@ discord.client [INFO] connect: Got a request to RESUME the websocket.
+2022-08-04 06:29:07,705@ discord.gateway [INFO] resume: Shard ID None has sent the RESUME payload.
+2022-08-04 06:29:07,868@ discord.gateway [INFO] received_message: Shard ID None has successfully RESUMED session 34921555de02324e5559745764b015ba under trace ["gateway-prd-main-210s",{"micros":627,"calls":["discord-sessions-green-prd-2-18",{"micros":17}]}].
+2022-08-04 07:44:03,171@ discord.client [INFO] connect: Got a request to RESUME the websocket.
+2022-08-04 07:44:03,657@ discord.gateway [INFO] resume: Shard ID None has sent the RESUME payload.
+2022-08-04 07:44:03,824@ discord.gateway [INFO] received_message: Shard ID None has successfully RESUMED session 34921555de02324e5559745764b015ba under trace ["gateway-prd-main-x8bk",{"micros":548,"calls":["discord-sessions-green-prd-2-18",{"micros":21}]}].
+2022-08-04 08:24:20,530@ discord.client [INFO] connect: Got a request to RESUME the websocket.
+2022-08-04 08:24:21,017@ discord.gateway [INFO] resume: Shard ID None has sent the RESUME payload.
+2022-08-04 08:24:21,186@ discord.gateway [INFO] received_message: Shard ID None has successfully RESUMED session 34921555de02324e5559745764b015ba under trace ["gateway-prd-main-lqv6",{"micros":482,"calls":["discord-sessions-green-prd-2-18",{"micros":19}]}].
+2022-08-04 08:24:27,209@ discord.client [INFO] run: Received signal to terminate bot and event loop.
+2022-08-04 08:24:27,213@ discord.client [INFO] run: Cleaning up tasks.
+2022-08-04 08:24:27,215@ discord.client [INFO] _cancel_tasks: Cleaning up after 1 tasks.
+2022-08-04 08:24:27,219@ discord.client [INFO] _cancel_tasks: All tasks finished cancelling.
+2022-08-04 08:24:27,221@ discord.client [INFO] _cleanup_loop: Closing the event loop.
