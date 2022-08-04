@@ -371,6 +371,24 @@ class Moderation(commands.Cog):
         await ctx.channel.send(embed=msg)
         using_command_logging_info(ctx, ctx.message.content)
 
+    @mute_member.error
+    async def mute_error(self, ctx, error):
+        user_error = ctx.message.author
+        msg_user_content = ctx.message.content
+        logging.error(f"ERROR UNBAN: {error}")
+        if isinstance(error, commands.UserNotFound):
+            user_no_exist_logging(user_error, msg_user_content)
+            text = user_no_exist(user_error)
+            await ctx.channel.send(text)
+        if isinstance(error, commands.MissingRequiredArgument):
+            wrong_uses_logging("mute", user_error, msg_user_content)
+            text = wrong_uses("mute", user_error)
+            await ctx.channel.send(text)
+        if isinstance(error, commands.MissingPermissions):
+            no_permission_logging_warning(user_error, msg_user_content)
+            text = no_permission(user_error)
+            await ctx.channel.send(text)
+
     @commands.command(name="unmute")
     @commands.has_permissions(administrator=True)
     async def unmute_member(self, ctx, username: member, *, reason="brak powodu"):
@@ -384,6 +402,23 @@ class Moderation(commands.Cog):
         await ctx.channel.send(embed=msg)
         using_command_logging_info(ctx, ctx.message.content)
 
+    @unmute_member.error
+    async def mute_error(self, ctx, error):
+        user_error = ctx.message.author
+        msg_user_content = ctx.message.content
+        logging.error(f"ERROR UNBAN: {error}")
+        if isinstance(error, commands.UserNotFound):
+            user_no_exist_logging(user_error, msg_user_content)
+            text = user_no_exist(user_error)
+            await ctx.channel.send(text)
+        if isinstance(error, commands.MissingRequiredArgument):
+            wrong_uses_logging("unmute", user_error, msg_user_content)
+            text = wrong_uses("unmute", user_error)
+            await ctx.channel.send(text)
+        if isinstance(error, commands.MissingPermissions):
+            no_permission_logging_warning(user_error, msg_user_content)
+            text = no_permission(user_error)
+            await ctx.channel.send(text)
 
 
 
