@@ -14,7 +14,7 @@ message = discord.Message
 member = discord.Member
 
 
-def using_command_logging_info(context, message_content):
+def     using_command_logging_info(context, message_content):
     return logging.info(f"Użytkownik {context.message.author} użył komendy <{message_content}>.")
 
 
@@ -40,6 +40,10 @@ def action_logging_warning(function, context, username_action, reason, delete_me
         t = f"zbanował (usunięto wiadomości z {delete_message_days})"
     if function == "unban":
         t = "odbanował"
+    if function == "mute":
+        t = "zmutował"
+    if function == "unmute":
+        t = "odciszył"
     msg = f"Użytkownik {context.message.author} {t} {username_action.display_name} za: {reason}."
     return logging.warning(msg)
 
@@ -61,6 +65,10 @@ def wrong_uses(function, username, t=None):
         t = f'!{function}'
     if function == "unban":
         t = f'!{function}'
+    if function == "mute":
+        t = f"!{function}"
+    if function == "unmute":
+        t = f"!{function}"
     msg = f'<@{username.id}>, źle użyłeś komendy, spróbuj `{t} <Użytkownik> <powód>`.'
     return msg
 
@@ -71,6 +79,10 @@ def wrong_uses_logging(function, username, message_content, t=None):
     if function == "ban":
         t = f"!{function}"
     if function == "unban":
+        t = f"!{function}"
+    if function == "mute":
+        t = f"!{function}"
+    if function == "unmute":
         t = f"!{function}"
     msg = f"Użytkownik {username} źle użył komendy <{t} {message_content}>."
     return logging.warning(msg)
@@ -86,6 +98,12 @@ def embed_action_info(function, ctx, username, bot, reason, what=None, what_happ
     if function == "unban":
         what = "Odbanowano na serwerze!"
         what_happen = "odbanowany na serwerze"
+    if function == "mute":
+        what = "Wyciszono na serwerze!"
+        what_happen = "wyciszony na serwerze"
+    if function == "unmute":
+        what = "Odciszono na serwerze!"
+        what_happen = "odciszony na serwerze"
 
     embed_msg = embed(title=f"{what}",
                       description=f"Użytkownik {username} został {what_happen}.",
@@ -339,6 +357,34 @@ class Moderation(commands.Cog):
             await ctx.channel.purge(limit=2)
             await ctx.channel.send(embed=embed_msg)
             logging.info(f"Ustawiono status bota na: Przerwa.")
+
+    @commands.command(name="mute")
+    @commands.has_permissions(administrator=True)
+    async def mute_member(self, ctx, username: member, *, reason="brak powodu"):
+        bot = self.client.user
+        guild_id = ctx.channel.guild.id
+        current_guild = self.client.get_guild(guild_id)
+        role_muted = current_guild.get_role(role_id=1002293617207034017)
+        await ctx.channel.purge(limit=1)
+        await username.add_roles(role_muted)
+        msg = embed_action_info("mute", ctx, username, bot, reason)
+        await ctx.channel.send(embed=msg)
+        using_command_logging_info(ctx, ctx.message.content)
+
+    @commands.command(name="unmute")
+    @commands.has_permissions(administrator=True)
+    async def unmute_member(self, ctx, username: member, *, reason="brak powodu"):
+        bot = self.client.user
+        guild_id = ctx.channel.guild.id
+        current_guild = self.client.get_guild(guild_id)
+        role_muted = current_guild.get_role(role_id=1002293617207034017)
+        await ctx.channel.purge(limit=1)
+        await username.remove_roles(role_muted)
+        msg = embed_action_info("unmute", ctx, username, bot, reason)
+        await ctx.channel.send(embed=msg)
+        using_command_logging_info(ctx, ctx.message.content)
+
+
 
 
 def setup(client):
