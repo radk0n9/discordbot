@@ -173,12 +173,12 @@ async def on_message(message):
     # Sending random message
     if len(message.content) >= 3:
         if channel.id == 944920042171170829:
-            with open("example_welcome.txt", "r", encoding="utf-8") as a:
+            with open("txt/example_welcome.txt", "r", encoding="utf-8") as a:
                 line_example_welcome = a.readlines()
                 for line in line_example_welcome:
                     line_striped = line.strip()
                     if message.content == line_striped:
-                        with open("welcome_txt.txt", "r", encoding="utf-8") as f:
+                        with open("txt/welcome_txt.txt", "r", encoding="utf-8") as f:
                             lines_welcome_text = f.readlines()
                             choice_welcome_text = random.choice(lines_welcome_text)
                         try:
