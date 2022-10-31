@@ -1,4 +1,4 @@
-aiohttp==3.7.4.post0
+aiohttp==3.8.3
 asgiref==3.5.2
 async-timeout==3.0.1
 attrs==21.4.0
@@ -9,7 +9,7 @@ commonmark==0.9.1
 discord.py==1.7.3
 discord==1.7.3
 django-request==1.6.1
-Django==4.0.5
+django>=4.0.8
 idna==3.3
 multidict==6.0.2
 pip==22.1.2
